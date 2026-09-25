@@ -1,45 +1,51 @@
 'use strict';
 
+/* ---------- Gdzie działa strona ---------- */
+// "artifact": w Claude (teksty pisze Claude na koncie użytkownika); "app": aplikacja instalowana z przeglądarki.
+const TARGET = window.KIO_TARGET || (window.claude ? 'artifact' : 'app');
+const IS_APP = TARGET === 'app';
+const MOBILE = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 /* ---------- Stałe ---------- */
 const MAX_PHOTOS = 10;
 
-// Ustawienia ogólne; dane marki są zapisane w bazie narzędzia (settings/brand).
 const DEFAULTS = {
-  brand: '',
-  person: '',
-  city: '',
-  area: 'cała Polska',
-  website: '',
-  instagram: '',
+  brand: '', city: '', website: '', instagram: '',
   services: 'fotografia ślubna, film ślubny, sesje plenerowe i narzeczeńskie',
-  voice: 'my',
-  emoji: 'few',
+  voice: 'my', emoji: 'few',
   tone: 'ciepły, elegancki i konkretny; premium bez nadęcia',
   cta: 'Wolne terminy: napisz w wiadomości prywatnej datę i miejsce ślubu.',
   keywords: 'fotograf ślubny, kamerzysta ślubny, film ślubny, sesja narzeczeńska, sesja plenerowa',
   hashtags: '',
-  weeklyGoal: 2,
-  days: [2, 5],
+  days: [2, 5], publishTime: '19:00', weeklyGoal: 2,
+  aiMain: 'gemini', aiFallback: true, claudeModel: 'opus',
 };
+// W aplikacji dane marki pochodzą z pliku config/brand.json (dołączanego przy budowaniu).
+const BRAND = IS_APP && window.KIO_BRAND && typeof window.KIO_BRAND === 'object' ? window.KIO_BRAND : {};
 
 const FORMATS = [
-  { id: 'ig45', name: 'Instagram · post', w: 1080, h: 1350, ratio: '4:5', tag: 'instagram-4x5', note: 'Bezpieczny standard feedu i karuzeli.' },
-  { id: 'ig34', name: 'Instagram · pełna wysokość', w: 1080, h: 1440, ratio: '3:4', tag: 'instagram-3x4', note: 'Najwyższy post z aplikacji; siatka profilu go nie przycina.' },
-  { id: 'story', name: 'Stories i rolki', w: 1080, h: 1920, ratio: '9:16', tag: 'stories-9x16', note: 'Zostaw wolne ok. 250 px u góry i u dołu na napisy.' },
-  { id: 'pin', name: 'Pinterest', w: 1000, h: 1500, ratio: '2:3', tag: 'pinterest-2x3', note: 'Standardowy pin.' },
-  { id: 'sq', name: 'Kwadrat', w: 1080, h: 1080, ratio: '1:1', tag: 'kwadrat-1x1', note: 'Facebook, miniatury, reklamy.' },
-  { id: 'wide', name: 'Strona, blog, Facebook', w: 1920, h: 1080, ratio: '16:9', tag: 'poziom-16x9', note: 'Wpis na blogu, okładka, YouTube.' },
-  { id: 'gbp', name: 'Profil Firmy w Google', w: 1200, h: 900, ratio: '4:3', tag: 'google-4x3', note: 'Post i zdjęcia w Mapach Google.' },
+  { id: 'ig45', name: 'Post', w: 1080, h: 1350, ratio: '4:5', tag: 'post-4x5', note: 'Standard feedu i karuzeli.' },
+  { id: 'ig34', name: 'Post wysoki', w: 1080, h: 1440, ratio: '3:4', tag: 'post-3x4', note: 'Najwyższy post; siatka profilu go nie przycina.' },
+  { id: 'story', name: 'Stories i rolka', w: 1080, h: 1920, ratio: '9:16', tag: 'stories-9x16', note: 'Zostaw wolną górę i dół na napisy.' },
+  { id: 'sq', name: 'Kwadrat', w: 1080, h: 1080, ratio: '1:1', tag: 'kwadrat-1x1', note: 'Facebook i miniatury.' },
 ];
 const FMT = Object.fromEntries(FORMATS.map(f => [f.id, f]));
 
 const TYPES = ['Ślub · reportaż', 'Przygotowania', 'Ceremonia', 'Przyjęcie weselne', 'Sesja narzeczeńska', 'Sesja plenerowa lub poślubna', 'Detale i dekoracje', 'Kulisy pracy', 'Teledysk lub film', 'Inne'];
 
 const GOALS = [
-  { id: 'inspiracja', label: 'Inspiracja', prompt: 'inspiracja i zasięg: tekst, który pary zapiszą i wyślą sobie nawzajem' },
-  { id: 'rezerwacje', label: 'Rezerwacje', prompt: 'rezerwacje: zachęta do kontaktu i podania daty ślubu' },
-  { id: 'porada', label: 'Porada dla par', prompt: 'wartość dla par: praktyczna porada związana z tym, co widać na zdjęciu' },
-  { id: 'zaufanie', label: 'Zaufanie', prompt: 'zaufanie: pokazanie sposobu pracy, doświadczenia i podejścia do pary' },
+  { id: 'inspiracja', label: 'Inspiracja', hint: 'Piękne zdjęcie, które pary zapiszą i wyślą sobie nawzajem.',
+    when: 'najlepsze kadry z reportażu albo sesji', gives: 'zapisania i udostępnienia, czyli zasięg do nowych par',
+    prompt: 'inspiracja i zasięg: tekst, który pary zapiszą i wyślą sobie nawzajem' },
+  { id: 'rezerwacje', label: 'Rezerwacje', hint: 'Zaproszenie do kontaktu, gdy masz wolne terminy.',
+    when: 'masz wolne daty, zwłaszcza od grudnia do marca, kiedy pary wybierają fotografa', gives: 'wiadomości z datą i miejscem ślubu',
+    prompt: 'rezerwacje: zachęta do kontaktu i podania daty ślubu' },
+  { id: 'porada', label: 'Porada dla par', hint: 'Praktyczna wskazówka, która wynika ze zdjęcia.',
+    when: 'zdjęcie pokazuje coś przydatnego: światło, harmonogram dnia, deszcz, pierwszy taniec', gives: 'zapisania i opinię eksperta, któremu można zaufać',
+    prompt: 'wartość dla par: praktyczna porada związana z tym, co widać na zdjęciu' },
+  { id: 'zaufanie', label: 'Zaufanie', hint: 'Pokazanie, jak pracujesz i jak czują się z Tobą pary.',
+    when: 'kulisy, przygotowania, opinia pary, Twoje podejście i sprzęt', gives: 'pewność pary, zanim zarezerwuje termin',
+    prompt: 'zaufanie: pokazanie sposobu pracy, doświadczenia i podejścia do pary' },
 ];
 
 const DAY_LABELS = [[1, 'Pn'], [2, 'Wt'], [3, 'Śr'], [4, 'Cz'], [5, 'Pt'], [6, 'Sb'], [0, 'Nd']];
@@ -49,8 +55,9 @@ const S = {
   photos: [], active: 0,
   result: null, isExample: true, history: [],
   igVariant: 0, pTab: 'instagram', frameBg: 'white',
-  settings: { ...DEFAULTS }, posts: [], savedPostId: null,
-  ctx: { type: TYPES[0], goal: 'inspiracja', place: '', tags: '', notes: '' },
+  settings: { ...DEFAULTS, ...BRAND }, keys: { gemini: '', claude: '' },
+  posts: [], savedPostId: null,
+  ctx: { type: TYPES[0], goal: 'inspiracja', place: '', notes: '' },
   busy: false, ctl: null, cards: {},
 };
 
@@ -81,6 +88,9 @@ const len = s => [...(s || '')].length;
 const clone = v => JSON.parse(JSON.stringify(v));
 const toBlob = (canvas, type = 'image/jpeg', q = 0.92) =>
   new Promise((res, rej) => canvas.toBlob(b => (b ? res(b) : rej(new Error('toBlob'))), type, q));
+const blobToB64 = blob => new Promise((res, rej) => {
+  const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = () => rej(r.error); r.readAsDataURL(blob);
+});
 
 const PL_MAP = { ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z' };
 function slugify(s, max = 60) {
@@ -100,15 +110,20 @@ function weekBounds(ref = new Date()) {
   const end = new Date(start); end.setDate(start.getDate() + 7);
   return [start, end];
 }
+function plural(n, one, few, many) {
+  if (n === 1) return one;
+  const d = n % 10, t = n % 100;
+  return d >= 2 && d <= 4 && (t < 12 || t > 14) ? few : many;
+}
 
-/* ---------- Możliwości strony w Claude ---------- */
-const CL = window.claude && typeof window.claude.use === 'function' ? window.claude : null;
+/* ---------- Możliwości strony w Claude (tylko artefakt) ---------- */
+const CL = !IS_APP && window.claude && typeof window.claude.use === 'function' ? window.claude : null;
 const cap = name => (CL ? CL.use(name).catch(() => null) : Promise.resolve(null));
 const samplePromise = cap('sample');
 const dlPromise = cap('downloads');
 const dbPromise = cap('db');
 
-/* ---------- Zapis: baza artefaktu albo przeglądarka ---------- */
+/* ---------- Zapis danych ---------- */
 const LS = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
@@ -161,7 +176,7 @@ const Store = {
 let toastTimer;
 function toast(msg) {
   const t = $('#toast'); t.textContent = msg; t.hidden = false;
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 3600);
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 3800);
 }
 function setStatus(msg, kind = '') {
   const s = $('#genStatus'); s.className = 'status' + (kind && kind !== 'busy' ? ' ' + kind : '');
@@ -191,64 +206,66 @@ function copyText(text, btn) {
   catch { fallback(); }
 }
 
-/* ---------- Pliki: zapis i ZIP ---------- */
-async function saveFile(filename, blob) {
-  const dl = await dlPromise;
-  if (!dl) { showSaveModal(filename, blob); return false; }
-  try { await dl.save({ filename, data: blob }); toast('Zapisano: ' + filename); return true; }
-  catch (e) {
-    const code = e?.code;
-    if (code === 'declined') return false;
-    if (code === 'rate_limited') { toast('Najpierw zamknij poprzednie okno zapisu.'); return false; }
-    if (['unavailable', 'not_granted', 'capability_disabled', 'capability_removed'].includes(code)) { showSaveModal(filename, blob); return false; }
-    toast('Nie udało się zapisać pliku. Spróbuj ponownie.'); return false;
-  }
+/* ---------- Zapisywanie plików ---------- */
+function downloadBlob(filename, blob) {
+  const url = URL.createObjectURL(blob);
+  const a = el('a', { href: url, download: filename, style: 'display:none' });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
-let modalUrl = null;
-function showSaveModal(filename, blob) {
-  const isImg = /^image\//.test(blob.type) || /\.(jpe?g|png)$/i.test(filename);
-  if (modalUrl) URL.revokeObjectURL(modalUrl);
-  modalUrl = URL.createObjectURL(blob);
-  $('#saveName').textContent = filename;
-  $('#saveImg').hidden = !isImg;
-  if (isImg) $('#saveImg').src = modalUrl;
-  $('#saveMsg').textContent = isImg
-    ? 'Pobieranie nie działa w tym widoku. Przytrzymaj obraz (telefon) albo kliknij go prawym przyciskiem i wybierz „Zapisz obraz jako…”.'
-    : 'Pobieranie nie działa w tym widoku. Otwórz narzędzie na claude.ai w przeglądarce albo pobierz kadry pojedynczo.';
+let modalUrls = [];
+function closeModal() { $('#saveModal').hidden = true; modalUrls.forEach(u => URL.revokeObjectURL(u)); modalUrls = []; }
+// Okno z gotowymi JPG: na telefonie „Zapisz do zdjęć” (menu udostępniania) albo przytrzymanie obrazu.
+function showSaveModal(files, msg) {
+  closeModal();
+  const imgs = $('#saveImgs'); imgs.replaceChildren();
+  for (const f of files) {
+    const url = URL.createObjectURL(f.blob); modalUrls.push(url);
+    imgs.append(el('figure', {}, el('img', { src: url, alt: f.name }), el('figcaption', { text: f.name })));
+  }
+  const acts = $('#saveActs'); acts.replaceChildren();
+  const shareFiles = files.map(f => new File([f.blob], f.name, { type: 'image/jpeg' }));
+  if (navigator.canShare && navigator.canShare({ files: shareFiles })) {
+    const b = el('button', { type: 'button', class: 'btn primary' }, files.length > 1 ? `Zapisz ${files.length} zdjęcia` : 'Zapisz do zdjęć');
+    b.addEventListener('click', async () => {
+      try { await navigator.share({ files: shareFiles }); closeModal(); }
+      catch (e) { if (e?.name !== 'AbortError') toast('Nie udało się otworzyć menu zapisu. Przytrzymaj obraz.'); }
+    });
+    acts.append(b);
+  }
+  $('#saveMsg').textContent = msg || 'Przytrzymaj obraz (telefon) albo kliknij go prawym przyciskiem i wybierz „Zapisz obraz jako…”.';
   $('#saveModal').hidden = false; $('#saveClose').focus();
 }
-
-const CRC_TABLE = (() => {
-  const t = new Uint32Array(256);
-  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
-  return t;
-})();
-function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
-// Prosty ZIP bez kompresji (JPG i tak się nie kompresuje).
-async function makeZip(files) {
-  const enc = new TextEncoder(); const parts = []; const central = []; let offset = 0;
-  const d = new Date();
-  const time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
-  const date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
-  for (const f of files) {
-    const data = new Uint8Array(await f.blob.arrayBuffer()); const name = enc.encode(f.name); const crc = crc32(data);
-    const lh = new DataView(new ArrayBuffer(30));
-    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
-    lh.setUint16(10, time, true); lh.setUint16(12, date, true); lh.setUint32(14, crc, true);
-    lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true); lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
-    parts.push(lh, name, data);
-    const ch = new DataView(new ArrayBuffer(46));
-    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true);
-    ch.setUint16(10, 0, true); ch.setUint16(12, time, true); ch.setUint16(14, date, true); ch.setUint32(16, crc, true);
-    ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true); ch.setUint16(28, name.length, true);
-    ch.setUint16(30, 0, true); ch.setUint16(32, 0, true); ch.setUint16(34, 0, true); ch.setUint16(36, 0, true);
-    ch.setUint32(38, 0, true); ch.setUint32(42, offset, true);
-    central.push(ch, name);
-    offset += 30 + name.length + data.length;
+// getFiles: async () => [{name, blob}] (pliki powstają dopiero po kliknięciu); count: ile ich będzie.
+async function saveFiles(getFiles, count = 1) {
+  if (!IS_APP) {
+    const files = await getFiles(); const dl = await dlPromise;
+    if (!dl) { showSaveModal(files); return; }
+    for (const f of files) {
+      try { await dl.save({ filename: f.name, data: f.blob }); }
+      catch (e) {
+        if (e?.code === 'declined') return;
+        if (['unavailable', 'not_granted', 'capability_disabled', 'capability_removed'].includes(e?.code)) { showSaveModal(files); return; }
+        toast('Nie udało się zapisać pliku. Spróbuj ponownie.'); return;
+      }
+    }
+    toast(files.length > 1 ? `Zapisano ${files.length} pliki.` : 'Zapisano: ' + files[0].name);
+    return;
   }
-  const cdSize = central.reduce((s, p) => s + p.byteLength, 0);
-  const end = new DataView(new ArrayBuffer(22));
-  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
-  end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
-  return new Blob([...parts, ...central, end], { type: 'application/zip' });
+  if (MOBILE) { showSaveModal(await getFiles(), 'Gotowe. Zapisz zdjęcia w telefonie.'); return; }
+  let dir = null;
+  // Folder trzeba wybrać od razu po kliknięciu, zanim zaczną się obliczenia.
+  if (window.showDirectoryPicker && count > 1) {
+    try { dir = await window.showDirectoryPicker({ mode: 'readwrite' }); }
+    catch (e) { if (e?.name === 'AbortError') return; dir = null; }
+  }
+  const files = await getFiles();
+  if (dir) {
+    try {
+      for (const f of files) { const h = await dir.getFileHandle(f.name, { create: true }); const w = await h.createWritable(); await w.write(f.blob); await w.close(); }
+      toast(`Zapisano ${files.length} pliki w folderze „${dir.name}”.`); return;
+    } catch (e) { console.warn(e); }
+  }
+  files.forEach((f, i) => setTimeout(() => downloadBlob(f.name, f.blob), i * 350));
+  toast(files.length > 1 ? `Pobieram ${files.length} pliki JPG.` : 'Pobrano: ' + files[0].name);
 }

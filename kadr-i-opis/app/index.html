@@ -1,3 +1,16 @@
+<!doctype html>
+<html lang="pl" class="app">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14171B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kadr i Opis">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Kadr i Opis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -265,6 +278,8 @@ textarea.copytext.short { font-size: 15px; }
 @media (max-width: 480px) { .xs-hide { display: none; } }
 @media (prefers-reduced-motion: reduce) { .spin { animation: none; } .drop, .results .pbody { transition: none; } }
 </style>
+</head>
+<body>
 <div class="app-wrap">
   <header class="top">
     <div class="brand">
@@ -471,7 +486,18 @@ textarea.copytext.short { font-size: 15px; }
   </div>
 </div>
 <script>
-window.KIO_TARGET = "artifact";
+window.KIO_TARGET = "app";
+window.KIO_BRAND = {
+  "brand": "KWFoto.pl",
+  "city": "Kraków, cała Polska",
+  "website": "www.kwfoto.pl",
+  "instagram": "",
+  "services": "fotografia ślubna premium, film ślubny, sesje plenerowe i narzeczeńskie, teledyski",
+  "voice": "ja-m",
+  "cta": "Wolne terminy na 2027: napisz w wiadomości prywatnej datę i miejsce ślubu.",
+  "keywords": "fotograf ślubny Kraków, kamerzysta ślubny Kraków, film ślubny Kraków, sesja narzeczeńska Kraków, sesja plenerowa Kraków"
+}
+;
 'use strict';
 
 /* ---------- Gdzie działa strona ---------- */
@@ -1996,3 +2022,5 @@ async function init() {
 }
 init();
 </script>
+</body>
+</html>

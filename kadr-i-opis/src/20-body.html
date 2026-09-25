@@ -1,18 +1,23 @@
-<div class="app">
+<div class="app-wrap">
   <header class="top">
     <div class="brand">
       <span class="mark" aria-hidden="true"></span>
       <div>
         <h1>Kadr i Opis</h1>
-        <p class="tag">Wrzuć zdjęcie. Dostaniesz opisy, hashtagi, SEO i kadry pod każdą platformę.</p>
+        <p class="tag">Wrzuć zdjęcie. Dostaniesz teksty i kadry gotowe do publikacji.</p>
       </div>
     </div>
-    <nav class="tabs" role="tablist" aria-label="Widoki">
-      <button type="button" role="tab" id="tab-new" data-view="new" aria-controls="view-new" aria-selected="true">Nowy post</button>
-      <button type="button" role="tab" id="tab-plan" data-view="plan" aria-controls="view-plan" aria-selected="false">Plan<span class="xs-hide">&nbsp;publikacji</span> <span class="count" id="planCount"></span></button>
-      <button type="button" role="tab" id="tab-settings" data-view="settings" aria-controls="view-settings" aria-selected="false">Ustawienia<span class="xs-hide">&nbsp;marki</span></button>
-    </nav>
+    <div class="top-right">
+      <button type="button" class="btn sm primary" id="installBtn" hidden>Zainstaluj aplikację</button>
+      <nav class="tabs" role="tablist" aria-label="Widoki">
+        <button type="button" role="tab" id="tab-new" data-view="new" aria-controls="view-new" aria-selected="true">Nowy post</button>
+        <button type="button" role="tab" id="tab-plan" data-view="plan" aria-controls="view-plan" aria-selected="false">Plan <span class="count" id="planCount"></span></button>
+        <button type="button" role="tab" id="tab-settings" data-view="settings" aria-controls="view-settings" aria-selected="false">Ustawienia</button>
+      </nav>
+    </div>
   </header>
+
+  <div class="today" id="today" hidden></div>
 
   <main>
     <section id="view-new" class="view" role="tabpanel" aria-labelledby="tab-new">
@@ -26,35 +31,33 @@
             <label class="drop" id="drop">
               <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple aria-label="Wybierz zdjęcia">
               <strong>Wrzuć zdjęcie</strong>
-              <span>albo przeciągnij tutaj · JPG, PNG, WebP · do 10 na karuzelę</span>
+              <span>albo przeciągnij tutaj · do 10 zdjęć na karuzelę</span>
             </label>
             <div class="strip" id="strip" hidden></div>
           </div>
 
           <form class="panel" id="ctxForm" novalidate>
-            <div class="panel-h">
-              <span class="step">2</span><h2>Kontekst</h2>
-              <div class="aside"><span class="hint">im więcej konkretów, tym lepsze teksty</span></div>
-            </div>
+            <div class="panel-h"><span class="step">2</span><h2>O poście</h2></div>
             <div class="field">
-              <label for="ctxType">Rodzaj materiału</label>
+              <label for="ctxType">Co jest na zdjęciu</label>
               <select id="ctxType"></select>
             </div>
-            <fieldset class="field">
-              <legend>Cel posta</legend>
-              <div class="chips" id="ctxGoal" role="group" aria-label="Cel posta"></div>
-            </fieldset>
             <div class="field">
-              <label for="ctxPlace">Miejsce</label>
-              <input type="text" id="ctxPlace" autocomplete="off" placeholder="np. Dwór w Tomaszowicach, okolice Krakowa">
+              <div class="lrow">
+                <span id="goalLabel">Cel posta</span>
+                <button type="button" class="info-btn" id="goalInfo" aria-expanded="false" aria-controls="goalPop" aria-label="Który cel wybrać?">i</button>
+                <div class="pop" id="goalPop" role="dialog" aria-label="Który cel wybrać?" hidden></div>
+              </div>
+              <div class="chips" id="ctxGoal" role="group" aria-labelledby="goalLabel"></div>
+              <p class="goal-hint" id="goalHint"></p>
             </div>
             <div class="field">
-              <label for="ctxTags">Kogo oznaczyć</label>
-              <input type="text" id="ctxTags" autocomplete="off" placeholder="np. @para, @sala, @wizaz">
+              <label for="ctxPlace">Miejsce</label>
+              <input type="text" id="ctxPlace" autocomplete="off" placeholder="np. Dwór w Tomaszowicach">
             </div>
             <div class="field">
               <label for="ctxNotes">Co warto wiedzieć</label>
-              <textarea id="ctxNotes" rows="3" placeholder="Historia pary, pogoda, co było wyjątkowe, trudne światło… Na telefonie możesz to podyktować."></textarea>
+              <textarea id="ctxNotes" rows="3" placeholder="Co było wyjątkowe? Kogo oznaczyć (@para, @sala)? Na telefonie możesz podyktować."></textarea>
             </div>
             <button type="submit" class="btn primary big" id="genBtn">Przygotuj post</button>
             <div class="status" id="genStatus" role="status" aria-live="polite"></div>
@@ -68,7 +71,7 @@
               <span class="badge" id="exampleBadge">Przykład</span>
               <div class="aside">
                 <button type="button" class="btn ghost sm" id="undoBtn" hidden>Cofnij poprawkę</button>
-                <button type="button" class="btn sm" id="saveBtn" hidden>Zapisz w planie</button>
+                <button type="button" class="btn sm primary" id="saveBtn" hidden>Zapisz w planie</button>
               </div>
             </div>
             <div class="analysis" id="analysis"></div>
@@ -98,7 +101,7 @@
               <button type="button" data-bg="black" aria-pressed="false">Czarne</button>
               <button type="button" data-bg="blur" aria-pressed="false">Rozmyte</button>
             </div>
-            <button type="button" class="btn sm primary" id="zipBtn">Pobierz wszystko (ZIP)</button>
+            <button type="button" class="btn sm primary" id="allBtn">Pobierz wszystkie JPG</button>
           </div>
         </div>
         <div class="formats" id="formats"></div>
@@ -106,46 +109,86 @@
     </section>
 
     <section id="view-plan" class="view" role="tabpanel" aria-labelledby="tab-plan" hidden>
-      <div class="plan-top" id="planStats"></div>
+      <div class="plan-sum" id="planSum"></div>
+      <p class="note" id="planNote" style="margin:-6px 0 16px"></p>
       <div id="planList"></div>
     </section>
 
     <section id="view-settings" class="view" role="tabpanel" aria-labelledby="tab-settings" hidden>
-      <form class="panel settings" id="setForm" novalidate>
-        <div class="panel-h"><h2>Ustawienia marki</h2><div class="aside"><span class="hint" id="storeNote"></span></div></div>
-        <p class="note" style="margin-bottom:16px">Te informacje trafiają do każdego zapytania, więc teksty brzmią jak Ty i celują w Twoje frazy.</p>
-        <div class="grid2">
-          <div class="field"><label for="s-brand">Nazwa marki</label><input type="text" id="s-brand"></div>
-          <div class="field"><label for="s-person">Imię i nazwisko</label><input type="text" id="s-person"></div>
-          <div class="field"><label for="s-city">Miasto</label><input type="text" id="s-city"></div>
-          <div class="field"><label for="s-area">Obszar działania</label><input type="text" id="s-area"></div>
-          <div class="field"><label for="s-website">Strona</label><input type="url" id="s-website"></div>
-          <div class="field"><label for="s-instagram">Instagram</label><input type="text" id="s-instagram" placeholder="@twojprofil"></div>
+      <form class="settings" id="setForm" novalidate>
+        <div class="panel set-sec">
+          <h3>Marka</h3>
+          <div class="grid2">
+            <div class="field"><label for="s-brand">Nazwa</label><input type="text" id="s-brand"></div>
+            <div class="field"><label for="s-city">Miasto lub region</label><input type="text" id="s-city"></div>
+            <div class="field"><label for="s-website">Strona</label><input type="url" id="s-website"></div>
+            <div class="field"><label for="s-instagram">Instagram</label><input type="text" id="s-instagram" placeholder="@twojprofil"></div>
+          </div>
+          <div class="field"><label for="s-services">Czym się zajmujesz</label><input type="text" id="s-services"></div>
         </div>
-        <div class="field"><label for="s-services">Usługi</label><input type="text" id="s-services"></div>
-        <div class="grid2">
-          <div class="field"><label for="s-voice">Forma wypowiedzi</label>
-            <select id="s-voice">
-              <option value="ja-m">Ja, forma męska („fotografowałem”)</option>
-              <option value="ja-f">Ja, forma żeńska („fotografowałam”)</option>
-              <option value="my">My, zespół („fotografowaliśmy”)</option>
-            </select></div>
-          <div class="field"><label for="s-emoji">Emoji</label>
-            <select id="s-emoji">
-              <option value="none">Bez emoji</option>
-              <option value="few">Oszczędnie (1–2)</option>
-              <option value="some">Swobodnie</option>
-            </select></div>
+
+        <div class="panel set-sec">
+          <h3>Styl tekstów</h3>
+          <div class="grid2">
+            <div class="field"><label for="s-voice">Jak piszesz o sobie</label>
+              <select id="s-voice">
+                <option value="ja-m">Ja, forma męska („zrobiłem”)</option>
+                <option value="ja-f">Ja, forma żeńska („zrobiłam”)</option>
+                <option value="my">My, zespół („zrobiliśmy”)</option>
+              </select></div>
+            <div class="field"><label for="s-emoji">Emoji</label>
+              <select id="s-emoji">
+                <option value="none">Bez emoji</option>
+                <option value="few">Oszczędnie</option>
+                <option value="some">Swobodnie</option>
+              </select></div>
+          </div>
+          <div class="field"><label for="s-tone">Ton</label><input type="text" id="s-tone"></div>
+          <div class="field"><label for="s-cta">Zaproszenie do kontaktu</label><input type="text" id="s-cta"></div>
+          <div class="field"><label for="s-keywords">Frazy, po których mają Cię znaleźć (po przecinku)</label><textarea id="s-keywords" rows="2"></textarea></div>
+          <div class="field"><label for="s-hashtags">Hashtag marki</label><input type="text" id="s-hashtags" placeholder="np. #twojamarka"></div>
         </div>
-        <div class="field"><label for="s-tone">Ton wypowiedzi</label><input type="text" id="s-tone"></div>
-        <div class="field"><label for="s-cta">Stałe wezwanie do działania</label><input type="text" id="s-cta"></div>
-        <div class="field"><label for="s-keywords">Frazy SEO (po przecinku)</label><textarea id="s-keywords" rows="2"></textarea></div>
-        <div class="field"><label for="s-hashtags">Stałe hashtagi marki (liczą się do limitu 5)</label><input type="text" id="s-hashtags" placeholder="np. #twojamarka"></div>
-        <div class="grid2">
-          <div class="field"><label for="s-goal">Cel: postów tygodniowo</label><input type="number" id="s-goal" min="1" max="14" step="1"></div>
+
+        <div class="panel set-sec">
+          <h3>Publikacja i przypomnienia</h3>
           <fieldset class="field"><legend>Dni publikacji</legend><div class="days chips" id="s-days" role="group" aria-label="Dni publikacji"></div></fieldset>
+          <div class="grid2">
+            <div class="field"><label for="s-time">Godzina publikacji</label><input type="time" id="s-time"></div>
+            <div class="field"><label for="s-goal">Postów tygodniowo</label><input type="number" id="s-goal" min="1" max="14" step="1"></div>
+          </div>
+          <p class="help">Przypomnienia działają przez kalendarz w telefonie: w zakładce Plan przy każdym poście jest przycisk „Kalendarz Google”.</p>
         </div>
-        <button type="submit" class="btn primary" id="setSave">Zapisz ustawienia</button>
+
+        <div class="panel set-sec" id="aiSec" hidden>
+          <h3>Silnik AI</h3>
+          <div class="field"><span class="lbl" style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Główny silnik</span>
+            <div class="seg" id="s-main" role="group" aria-label="Główny silnik">
+              <button type="button" data-v="gemini" aria-pressed="true">Gemini</button>
+              <button type="button" data-v="claude" aria-pressed="false">Claude</button>
+            </div></div>
+          <div class="field"><label for="k-gemini">Klucz Gemini</label>
+            <div class="keyrow"><input type="password" id="k-gemini" autocomplete="off" spellcheck="false" placeholder="AIza…"><button type="button" class="btn sm" data-test="gemini">Sprawdź</button></div>
+            <p class="help">Darmowy klucz utworzysz na <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.</p>
+            <p class="help" id="t-gemini"></p></div>
+          <div class="field"><label for="k-claude">Klucz Claude</label>
+            <div class="keyrow"><input type="password" id="k-claude" autocomplete="off" spellcheck="false" placeholder="sk-ant-…"><button type="button" class="btn sm" data-test="claude">Sprawdź</button></div>
+            <p class="help">Płatny klucz API utworzysz na <a href="https://platform.claude.com" target="_blank" rel="noopener">platform.claude.com</a> (to osobne konto niż abonament Claude).</p>
+            <p class="help" id="t-claude"></p></div>
+          <div class="field"><label for="s-claudeModel">Model Claude</label>
+            <select id="s-claudeModel">
+              <option value="opus">Claude Opus 5 · najlepsze teksty</option>
+              <option value="sonnet">Claude Sonnet 5 · tańszy</option>
+            </select></div>
+          <label class="check"><input type="checkbox" id="s-fallback"> Gdy główny silnik nie zadziała, użyj drugiego</label>
+          <p class="help">Klucze zapisują się tylko na tym urządzeniu.</p>
+        </div>
+
+        <div class="panel set-sec" id="aiNote" hidden>
+          <h3>Silnik AI</h3>
+          <p class="help" style="font-size:14px">Tutaj teksty pisze Claude na Twoim koncie Claude. Gemini i klucze API ustawisz w wersji aplikacji na komputer i telefon.</p>
+        </div>
+
+        <div class="save-bar"><button type="submit" class="btn primary" id="setSave">Zapisz ustawienia</button><span class="hint" id="storeNote"></span></div>
       </form>
     </section>
   </main>
@@ -154,9 +197,9 @@
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <div class="modal" id="saveModal" hidden>
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="saveTitle">
-    <div class="panel-h" style="margin:0"><h2 id="saveTitle">Zapisz plik</h2><div class="aside"><button type="button" class="btn sm" id="saveClose">Zamknij</button></div></div>
-    <p class="note" id="saveMsg">Pobieranie nie działa w tym widoku. Przytrzymaj obraz (telefon) albo kliknij go prawym przyciskiem i wybierz „Zapisz obraz jako…”.</p>
-    <p class="mono note" id="saveName"></p>
-    <img id="saveImg" alt="Podgląd pliku do zapisania">
+    <div class="panel-h" style="margin:0"><h2 id="saveTitle">Zapisz obraz</h2><div class="aside"><button type="button" class="btn sm" id="saveClose">Zamknij</button></div></div>
+    <p class="note" id="saveMsg"></p>
+    <div class="actions" id="saveActs" style="margin:0"></div>
+    <div class="save-imgs" id="saveImgs"></div>
   </div>
 </div>

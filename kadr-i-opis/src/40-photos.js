@@ -18,7 +18,6 @@ function drawHQ(ctx, src, sx, sy, sw, sh, dx, dy, dw, dh) {
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(s, x, y, w, h, dx, dy, dw, dh);
 }
-
 function drawBlurBg(ctx, src, outW, outH) {
   const [W, H] = srcDims(src);
   const sc = Math.max(outW / W, outH / H);
@@ -43,7 +42,7 @@ function cropRect(p, fmt, st) {
 function normalizeCenter(p, fmt, st) { const r = cropRect(p, fmt, st); st.cx = (r.x + r.w / 2) / p.w; st.cy = (r.y + r.h / 2) / p.h; }
 function keepShare(p, fmt) { const [bw, bh] = baseSize(p, fmt); return (bw * bh) / (p.w * p.h); }
 
-// Kadr ustawiony na punkt kluczowy; jeśli motyw się mieści, cały zostaje w kadrze.
+// Kadr ustawiony na punkt kluczowy; jeśli główny motyw się mieści, zostaje w kadrze w całości.
 function autoCrop(p, fmt) {
   const [w, h] = baseSize(p, fmt);
   const pt = p.ai?.point || { x: 0.5, y: 0.42 }; const b = p.ai?.box;
@@ -58,7 +57,6 @@ function autoCrop(p, fmt) {
   if (advice === 'kadr') mode = 'crop'; else if (advice === 'ramka') mode = 'frame';
   return { cx: (x + w / 2) / p.w, cy: (y + h / 2) / p.h, z: 1, mode, touched: false };
 }
-
 function drawFormat(ctx, outW, outH, p, fmt, st, src) {
   const [SW, SH] = srcDims(src); const k = SW / p.w;
   if (st.mode === 'frame') {
@@ -94,8 +92,16 @@ async function loadPhoto(file) {
   const preview = document.createElement('canvas');
   preview.width = Math.max(1, Math.round(w * k)); preview.height = Math.max(1, Math.round(h * k));
   drawHQ(preview.getContext('2d'), img, 0, 0, w, h, 0, 0, preview.width, preview.height);
-  // Pełna rozdzielczość jest dekodowana ponownie dopiero przy eksporcie, żeby oszczędzać pamięć telefonu.
+  // Pełna rozdzielczość jest dekodowana ponownie dopiero przy zapisie, żeby oszczędzać pamięć telefonu.
   return { id: uid(), name: file.name, url, w, h, preview, thumb: makeThumb(preview, 240), ai: null, crops: {} };
+}
+// Zdjęcie dla AI: dłuższy bok 1280 px wystarcza do opisu i kadrowania.
+function aiImage(p) {
+  const k = Math.min(1, 1280 / Math.max(p.preview.width, p.preview.height));
+  const c = document.createElement('canvas');
+  c.width = Math.round(p.preview.width * k); c.height = Math.round(p.preview.height * k);
+  drawHQ(c.getContext('2d'), p.preview, 0, 0, p.preview.width, p.preview.height, 0, 0, c.width, c.height);
+  return toBlob(c, 'image/jpeg', 0.85);
 }
 const aiOf = a => (a ? { point: a.point, box: a.box } : null);
 
@@ -154,7 +160,6 @@ function applyOrder() {
   S.active = 0; renderStrip(); renderFormats(); renderResults();
   toast('Ustawiono kolejność karuzeli.');
 }
-
 function renderStrip() {
   const strip = $('#strip'); strip.replaceChildren();
   strip.hidden = !S.photos.length;
@@ -177,6 +182,7 @@ function renderFormats() {
   const p = S.photos[S.active];
   $('#cropHint').textContent = !p ? 'Wgraj zdjęcie, a kadry przygotują się same.'
     : (S.photos.length > 1 ? `Zdjęcie ${S.active + 1} z ${S.photos.length}. ` : '') + 'Przeciągnij podgląd, żeby przesunąć kadr.';
+  $('#allBtn').disabled = !p;
   for (const f of FORMATS) {
     const card = {};
     const box = el('div', { class: 'box', style: `--ar:${f.w} / ${f.h}` });
@@ -190,11 +196,11 @@ function renderFormats() {
         el('button', { type: 'button', 'data-mode': 'crop', 'aria-pressed': String(st.mode === 'crop'), onclick: () => setMode(f.id, 'crop') }, 'Kadr'),
         el('button', { type: 'button', 'data-mode': 'frame', 'aria-pressed': String(st.mode === 'frame'), onclick: () => setMode(f.id, 'frame') }, 'Ramka'));
       card.move = el('button', { type: 'button', class: 'btn sm ghost', onclick: () => toggleEdit(f.id) }, 'Przesuń');
-      card.dl = el('button', { type: 'button', class: 'btn sm', onclick: () => downloadOne(f.id) }, 'Pobierz JPG');
+      card.dl = el('button', { type: 'button', class: 'btn sm dl', onclick: () => downloadOne(f.id) }, 'Pobierz JPG');
       card.zoomIn = el('input', { type: 'range', min: '100', max: '250', step: '5', value: String(Math.round(st.z * 100)),
         'aria-label': 'Powiększenie kadru', oninput: e => setZoom(f.id, +e.target.value) });
       card.zoom = el('label', { class: 'zoom' }, 'Zoom', card.zoomIn);
-      controls = [el('div', { class: 'fmt-ctl' }, card.seg, card.move, card.dl), card.zoom];
+      controls = [el('div', { class: 'fmt-ctl' }, card.seg, card.move), card.zoom, card.dl];
     } else {
       box.append(el('span', { class: 'empty', text: `${f.w} × ${f.h} px` }));
     }
@@ -268,7 +274,7 @@ function attachPan(card, id) {
   });
 }
 
-/* ---------- Eksport ---------- */
+/* ---------- Zapis JPG ---------- */
 function fileBase(i) {
   const fromAi = S.isExample ? '' : S.result?.photos?.[i]?.file;
   const base = slugify(fromAi || (!S.isExample && S.result?.seo?.slug) || [S.ctx.type, S.ctx.place, S.settings.brand].filter(Boolean).join(' ')) || 'zdjecie';
@@ -280,28 +286,28 @@ async function exportBlob(p, fmt, full) {
   drawFormat(c.getContext('2d'), fmt.w, fmt.h, p, fmt, p.crops[fmt.id], full);
   return toBlob(c, 'image/jpeg', 0.92);
 }
-async function downloadOne(id) {
-  const p = S.photos[S.active]; if (!p) return;
-  const btn = S.cards[id]?.dl; if (btn) { btn.disabled = true; btn.textContent = 'Przygotowuję…'; }
-  try { const full = await decodeUrl(p.url); await saveFile(fileName(S.active, id), await exportBlob(p, FMT[id], full)); }
+async function withBusy(btn, label, fn) {
+  const old = btn?.textContent; if (btn) { btn.disabled = true; btn.textContent = label; }
+  try { await fn(); }
   catch (e) { console.warn(e); toast('Nie udało się przygotować pliku. Spróbuj ponownie.'); }
-  finally { if (btn) { btn.disabled = false; btn.textContent = 'Pobierz JPG'; } }
+  finally { if (btn) { btn.disabled = false; btn.textContent = old; } }
 }
-async function downloadZip() {
+function downloadOne(id) {
+  const i = S.active; const p = S.photos[i]; if (!p) return;
+  return withBusy(S.cards[id]?.dl, 'Przygotowuję…', () => saveFiles(async () => {
+    const full = await decodeUrl(p.url);
+    return [{ name: fileName(i, id), blob: await exportBlob(p, FMT[id], full) }];
+  }, 1));
+}
+function downloadAll() {
   if (!S.photos.length) { toast('Najpierw wgraj zdjęcie.'); return; }
-  const btn = $('#zipBtn'); const old = btn.textContent; btn.disabled = true;
-  try {
+  const photos = S.photos.slice();
+  return withBusy($('#allBtn'), 'Przygotowuję…', () => saveFiles(async () => {
     const files = [];
-    for (let i = 0; i < S.photos.length; i++) {
-      btn.textContent = `Przygotowuję ${i + 1}/${S.photos.length}…`;
-      const p = S.photos[i]; const full = await decodeUrl(p.url);
-      for (const f of FORMATS) files.push({ name: fileName(i, f.id), blob: await exportBlob(p, f, full) });
+    for (let i = 0; i < photos.length; i++) {
+      const full = await decodeUrl(photos[i].url);
+      for (const f of FORMATS) files.push({ name: fileName(i, f.id), blob: await exportBlob(photos[i], f, full) });
     }
-    if (!S.isExample && S.result) files.push({ name: 'teksty.txt', blob: new Blob([textsExport()], { type: 'text/plain' }) });
-    btn.textContent = 'Pakuję…';
-    const zip = await makeZip(files);
-    const base = slugify((!S.isExample && S.result?.seo?.slug) || [S.ctx.type, S.ctx.place].filter(Boolean).join(' ')) || 'post';
-    await saveFile(`${base}-kadry.zip`, zip);
-  } catch (e) { console.warn(e); toast('Nie udało się przygotować paczki. Pobierz kadry pojedynczo.'); }
-  finally { btn.disabled = false; btn.textContent = old; }
+    return files;
+  }, photos.length * FORMATS.length));
 }
