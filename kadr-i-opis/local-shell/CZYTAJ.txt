@@ -1,0 +1,17 @@
+KADR I OPIS – wersja na komputer
+
+URUCHAMIANIE
+Windows: kliknij dwukrotnie „Uruchom (Windows).bat”. Aplikacja otworzy się w osobnym oknie.
+         Skrót na pulpicie: prawy przycisk na tym pliku → Wyślij do → Pulpit (utwórz skrót).
+Mac:     za pierwszym razem kliknij prawym przyciskiem „Uruchom (Mac).command” → Otwórz → Otwórz.
+         Później wystarczy dwuklik. Najlepiej działa z zainstalowanym Chrome.
+
+PIERWSZE URUCHOMIENIE
+1. Wejdź na aistudio.google.com/apikey i kliknij „Create API key”.
+2. W aplikacji: Ustawienia → Silnik AI → wklej klucz → Sprawdź → Zapisz ustawienia.
+
+DOBRZE WIEDZIEĆ
+- Ustawienia, plan i klucze zapisują się w przeglądarce na tym komputerze.
+  Uruchamiaj aplikację zawsze w ten sam sposób, żeby je widzieć.
+- Do pisania tekstów potrzebny jest internet. Kadrowanie działa bez niego.
+- Folder możesz przenieść w dowolne miejsce, np. do Dokumentów.

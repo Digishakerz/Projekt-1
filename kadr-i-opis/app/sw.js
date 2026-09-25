@@ -1,5 +1,5 @@
 // Kadr i Opis: pamięć podręczna aplikacji (działa też bez internetu, poza pisaniem tekstów).
-const CACHE = 'kio-1982894712';
+const CACHE = 'kio-1953212529';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/favicon-32.png', './vendor/anthropic-sdk.mjs'];
 
 self.addEventListener('install', e => {

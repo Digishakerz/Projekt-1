@@ -1311,10 +1311,12 @@ async function geminiJson(prompt, images, signal) {
   throw last;
 }
 
-// Claude przez API: oficjalna biblioteka @anthropic-ai/sdk dołączona w vendor/ (tylko w aplikacji).
+// Claude przez API: oficjalna biblioteka @anthropic-ai/sdk. Wersja lokalna ma ją wbudowaną (window.AnthropicSDK),
+// aplikacja online wczytuje ją z vendor/ dopiero wtedy, gdy jest potrzebna.
 const CLAUDE_MODELS = { opus: 'claude-opus-5', sonnet: 'claude-sonnet-5' };
 let sdkPromise = null;
 function loadSdk() {
+  if (window.AnthropicSDK?.default) return Promise.resolve(window.AnthropicSDK.default);
   sdkPromise ||= import('./vendor/anthropic-sdk.mjs').then(m => m.default)
     .catch(e => { sdkPromise = null; throw { code: 'network', provider: 'claude', detail: String(e) }; });
   return sdkPromise;

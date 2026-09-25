@@ -26,6 +26,15 @@ Potem:
 - **iPhone**: otwórz adres w Safari → Udostępnij → „Do ekranu początkowego”.
 - **Android**: otwórz adres w Chrome → menu → „Zainstaluj aplikację”.
 
+## Wersja lokalna (na komputer, bez GitHuba)
+
+Paczka `kadr-i-opis-lokalnie.zip` (do pobrania też z https://digishakerz.github.io/Projekt-1/kadr-i-opis-lokalnie.zip):
+
+- **Windows**: rozpakuj i kliknij dwukrotnie `Uruchom (Windows).bat`. Aplikacja otworzy się w osobnym oknie Edge.
+- **Mac**: rozpakuj, za pierwszym razem prawy przycisk na `Uruchom (Mac).command` → Otwórz → Otwórz. Otworzy się okno Chrome (albo Edge), a bez nich domyślna przeglądarka.
+
+Wszystko jest w jednym pliku `kadr-i-opis.html`, razem z biblioteką Claude. Internet jest potrzebny tylko do pisania tekstów.
+
 ## Klucze AI (tylko w aplikacji)
 
 - **Gemini** (darmowy): https://aistudio.google.com/apikey → „Create API key”. Wklej w *Ustawienia → Silnik AI* i kliknij „Sprawdź”. Darmowy limit jest dzienny; gdy się skończy, aplikacja przełącza się na lżejszy model Gemini, a potem na Claude, jeśli dodasz jego klucz.

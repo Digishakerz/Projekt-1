@@ -33,4 +33,29 @@ sed "s/__BUILD__/$BUILD/" app-shell/sw.js > app/sw.js
   printf '</script>\n</body>\n</html>\n'
 } > app/index.html
 
-echo "index.html: $(wc -c < index.html) B, app/index.html: $(wc -c < app/index.html) B, wersja $BUILD"
+# Wersja lokalna: jeden plik HTML z wbudowaną biblioteką Claude, skróty do uruchamiania i paczka ZIP do pobrania.
+LOCAL="lokalnie/Kadr i Opis"
+rm -rf lokalnie && mkdir -p "$LOCAL"
+cp "local-shell/Uruchom (Windows).bat" "local-shell/Uruchom (Mac).command" local-shell/CZYTAJ.txt "$LOCAL/"
+chmod +x "$LOCAL/Uruchom (Mac).command"
+FAVICON=$(base64 < app-shell/icons/favicon-32.png | tr -d '\n')
+{
+  printf '<!doctype html>\n<html lang="pl" class="app">\n<head>\n<meta charset="utf-8">\n'
+  printf '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+  printf '<link rel="icon" href="data:image/png;base64,%s">\n' "$FAVICON"
+  cat src/10-head.html
+  printf '</head>\n<body>\n'
+  cat src/20-body.html
+  printf '<script>\n'
+  cat local-shell/anthropic-sdk.iife.js
+  printf '\n</script>\n<script>\nwindow.KIO_TARGET = "app";\nwindow.KIO_BRAND = '
+  cat config/brand.json
+  printf ';\n'
+  cat $JS
+  printf '</script>\n</body>\n</html>\n'
+} > "$LOCAL/kadr-i-opis.html"
+# Stała data plików, żeby ZIP zmieniał się tylko wtedy, gdy zmienia się treść.
+find lokalnie -exec touch -t 202601010000 {} +
+(cd lokalnie && find "Kadr i Opis" -type f | LC_ALL=C sort | zip -X -q ../app/kadr-i-opis-lokalnie.zip -@)
+
+echo "index.html: $(wc -c < index.html) B, app/index.html: $(wc -c < app/index.html) B, lokalnie: $(wc -c < app/kadr-i-opis-lokalnie.zip) B ZIP, wersja $BUILD"
