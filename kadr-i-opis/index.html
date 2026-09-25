@@ -1,0 +1,1673 @@
+<title>Kadr i Opis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap">
+<style>
+:root {
+  --bg: #E7EAED;
+  --surface: #FFFFFF;
+  --surface-2: #F2F4F6;
+  --ink: #14171B;
+  --muted: #58606A;
+  --line: #D1D6DC;
+  --line-strong: #A9B1BA;
+  --accent: #C4302B;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #F8E4E2;
+  --ok: #2D7649;
+  --warn: #9A620F;
+  --shadow: 0 1px 2px rgba(20, 23, 27, .06), 0 10px 28px -14px rgba(20, 23, 27, .22);
+  --sans: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --r: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D0F11; --surface: #16191D; --surface-2: #1E2227; --ink: #E8EBEE; --muted: #9BA4AE;
+    --line: #2B3138; --line-strong: #47505A; --accent: #FF5A4E; --accent-ink: #1B0908; --accent-soft: #3B1714;
+    --ok: #5DC98B; --warn: #E3A844; --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -14px rgba(0, 0, 0, .7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D0F11; --surface: #16191D; --surface-2: #1E2227; --ink: #E8EBEE; --muted: #9BA4AE;
+  --line: #2B3138; --line-strong: #47505A; --accent: #FF5A4E; --accent-ink: #1B0908; --accent-soft: #3B1714;
+  --ok: #5DC98B; --warn: #E3A844; --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -14px rgba(0, 0, 0, .7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body { color: var(--ink); font: 400 15px/1.5 var(--sans); padding-inline: 16px; padding-block: 0 48px; -webkit-font-smoothing: antialiased; }
+.app { max-width: 1320px; margin: 0 auto; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mono { font-family: var(--mono); }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+
+/* Header */
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; padding-block: 22px 0; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+.brand { display: flex; align-items: center; gap: 14px; padding-bottom: 14px; }
+.mark { --c: var(--ink); width: 36px; height: 36px; flex: none; background:
+  linear-gradient(var(--c), var(--c)) 0 0 / 12px 2px no-repeat, linear-gradient(var(--c), var(--c)) 0 0 / 2px 12px no-repeat,
+  linear-gradient(var(--c), var(--c)) 100% 0 / 12px 2px no-repeat, linear-gradient(var(--c), var(--c)) 100% 0 / 2px 12px no-repeat,
+  linear-gradient(var(--c), var(--c)) 0 100% / 12px 2px no-repeat, linear-gradient(var(--c), var(--c)) 0 100% / 2px 12px no-repeat,
+  linear-gradient(var(--c), var(--c)) 100% 100% / 12px 2px no-repeat, linear-gradient(var(--c), var(--c)) 100% 100% / 2px 12px no-repeat,
+  radial-gradient(circle, var(--accent) 0 5px, transparent 5.5px) center / 100% 100% no-repeat; }
+h1 { font: 800 27px/1 var(--sans); font-stretch: 70%; letter-spacing: .03em; text-transform: uppercase; margin: 0; }
+.tag { margin: 5px 0 0; color: var(--muted); font-size: 13.5px; }
+.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+.tabs button { font: 600 14px/1 var(--sans); padding: 12px 14px; border: 0; background: none; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.tabs button:hover { color: var(--ink); }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.count { font: 600 11px/1 var(--mono); background: var(--accent); color: var(--accent-ink); border-radius: 9px; padding: 3px 6px; }
+.count:empty { display: none; }
+
+/* Panels */
+.studio { display: grid; gap: 16px; }
+@media (min-width: 980px) { .studio { grid-template-columns: minmax(320px, 400px) minmax(0, 1fr); align-items: start; } }
+.col { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+.panel-h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.panel-h h2 { font: 700 15px/1.2 var(--sans); font-stretch: 78%; text-transform: uppercase; letter-spacing: .08em; margin: 0; }
+.panel-h .aside { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.step { font: 600 12px/1 var(--mono); color: var(--accent); }
+.hint { font-size: 12.5px; color: var(--muted); }
+
+/* Upload */
+.drop { position: relative; display: grid; place-items: center; gap: 4px; text-align: center; padding: 26px 16px; border: 1.5px dashed var(--line-strong); border-radius: var(--r); background: var(--surface-2); cursor: pointer; transition: border-color .15s, background-color .15s; }
+.drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.drop:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.drop input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.drop strong { font-size: 16px; }
+.drop span { color: var(--muted); font-size: 13px; }
+.strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; margin-top: 12px; }
+.thumb { position: relative; aspect-ratio: 1; border-radius: 4px; overflow: hidden; background: var(--surface-2); outline: 2px solid transparent; outline-offset: 1px; }
+.thumb.active { outline-color: var(--accent); }
+.thumb .sel { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb .n { position: absolute; left: 4px; top: 4px; font: 600 11px/1 var(--mono); background: rgba(0, 0, 0, .62); color: #fff; padding: 3px 5px; border-radius: 3px; pointer-events: none; }
+.thumb .cov { position: absolute; left: 0; right: 0; bottom: 0; font: 600 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; background: var(--accent); color: var(--accent-ink); padding: 4px 0; text-align: center; pointer-events: none; }
+.thumb .rm { position: absolute; right: 4px; top: 4px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgba(0, 0, 0, .62); color: #fff; font: 600 15px/1 var(--sans); cursor: pointer; display: grid; place-items: center; }
+
+/* Forms */
+.field { display: grid; gap: 6px; margin: 0 0 13px; border: 0; padding: 0; min-width: 0; }
+.field > label, .field > legend { font-weight: 600; font-size: 13px; padding: 0; margin-bottom: 0; }
+.field > legend { margin-bottom: 6px; }
+input[type="text"], input[type="url"], input[type="number"], input[type="date"], select, textarea {
+  width: 100%; max-width: 100%; font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 9px 10px; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+textarea { resize: vertical; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 13px/1.2 var(--sans); padding: 7px 11px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); cursor: pointer; }
+.chip:hover { border-color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+@media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+
+/* Buttons */
+.btn { font: 600 14px/1.2 var(--sans); padding: 9px 14px; border-radius: 4px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.btn:hover { border-color: var(--ink); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.07); }
+.btn.big { width: 100%; padding: 14px 16px; font-size: 15px; font-stretch: 88%; text-transform: uppercase; letter-spacing: .07em; }
+.btn.sm { padding: 6px 10px; font-size: 13px; }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.btn.ghost:hover { color: var(--ink); border-color: var(--line); }
+.btn:disabled { opacity: .5; cursor: not-allowed; filter: none; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 16px; }
+
+/* Status */
+.status { min-height: 1.5em; margin: 12px 0 0; font-size: 14px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.status.err { color: var(--accent); }
+.status.ok { color: var(--ok); }
+.spin { width: 14px; height: 14px; border: 2px solid var(--line-strong); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Results */
+.badge { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; padding: 5px 7px; border-radius: 3px; background: var(--accent-soft); color: var(--accent); }
+.analysis { background: var(--surface-2); border-radius: 4px; padding: 13px 15px; margin-bottom: 16px; font-size: 14px; display: grid; gap: 7px; }
+.analysis p { margin: 0; }
+.analysis ul { margin: 0; padding-left: 18px; display: grid; gap: 3px; }
+.analysis .ex { color: var(--accent); font-weight: 600; }
+.analysis details summary { cursor: pointer; font-weight: 600; }
+.analysis .checks { list-style: none; padding: 6px 0 0; }
+.analysis .checks label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+.analysis .checks input { margin-top: 3px; accent-color: var(--accent); }
+.ptabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; margin-bottom: 16px; }
+.ptabs button { font: 600 13.5px/1 var(--sans); padding: 10px 12px; border: 0; background: none; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; cursor: pointer; }
+.ptabs button:hover { color: var(--ink); }
+.ptabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+@media (max-width: 560px) { .ptabs { flex-wrap: wrap; } }
+@media (max-width: 480px) { .xs-hide { display: none; } }
+.results.busy .pbody, .results.busy .analysis { opacity: .45; pointer-events: none; transition: opacity .2s; }
+.fblock { margin-bottom: 16px; }
+.fblock-h { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.fblock-h label, .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.counter { font: 400 12px/1 var(--mono); color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; }
+.counter.warn { color: var(--warn); }
+.counter.over { color: var(--accent); font-weight: 600; }
+textarea.copytext { font: 400 16px/1.55 var(--serif); min-height: 2.8em; overflow-wrap: anywhere; }
+textarea.copytext.short { font-size: 15px; }
+.variants { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tagchip { font: 500 13px/1 var(--mono); padding: 5px 6px 5px 9px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--line); display: inline-flex; gap: 4px; align-items: center; }
+.tagchip button { border: 0; background: none; color: var(--muted); cursor: pointer; padding: 0 3px; font: 600 15px/1 var(--sans); }
+.tagchip button:hover { color: var(--accent); }
+.tags input { width: 150px; padding: 6px 8px; font: 400 13px/1 var(--mono); }
+.info { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 7px 14px; font-size: 14px; margin: 0 0 16px; }
+.info dt { color: var(--muted); }
+.info dd { margin: 0; overflow-wrap: anywhere; }
+.alts { display: grid; gap: 4px; }
+.altrow { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; align-items: start; }
+.altrow img, .altrow .ph { width: 44px; height: 44px; object-fit: cover; border-radius: 3px; background: var(--surface-2); margin-top: 22px; }
+.fblock-h .btn { margin-left: auto; }
+.fblock-h .counter + .btn { margin-left: 0; }
+.tagchip.kw { padding-right: 9px; font-family: var(--sans); }
+.story + .story { border-top: 1px solid var(--line); padding-top: 12px; }
+.refine { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 4px; display: grid; gap: 9px; }
+.refine-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.refine-row input { flex: 1 1 200px; min-width: 0; }
+
+/* Crops */
+.crops { margin-top: 16px; }
+.formats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px 16px; align-items: start; }
+@media (min-width: 700px) { .formats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .formats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.fmt { display: grid; gap: 8px; min-width: 0; }
+.frame { --m: var(--line-strong); position: relative; padding: 9px; background:
+  linear-gradient(var(--m), var(--m)) 0 0 / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) 0 0 / 1px 11px no-repeat,
+  linear-gradient(var(--m), var(--m)) 100% 0 / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) 100% 0 / 1px 11px no-repeat,
+  linear-gradient(var(--m), var(--m)) 0 100% / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) 0 100% / 1px 11px no-repeat,
+  linear-gradient(var(--m), var(--m)) 100% 100% / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) 100% 100% / 1px 11px no-repeat; }
+.fmt.editing .frame { --m: var(--accent); }
+.box { position: relative; aspect-ratio: var(--ar); width: 100%; max-width: 100%; background: var(--surface-2); overflow: hidden; display: grid; place-items: center; }
+.box canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
+.fmt.editing .box canvas { touch-action: none; }
+.box .empty { font: 400 12px/1.4 var(--mono); color: var(--muted); text-align: center; padding: 8px; }
+.fmt-h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.fmt-h strong { font-size: 14px; }
+.fmt-h .mono { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.fmt-note { font-size: 12.5px; color: var(--muted); margin: 0; }
+.fmt-ctl { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 4px; overflow: hidden; }
+.seg button { font: 600 12.5px/1 var(--sans); padding: 7px 10px; border: 0; background: var(--surface); color: var(--muted); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line-strong); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.zoom { display: flex; align-items: center; gap: 8px; font: 400 12px/1 var(--mono); color: var(--muted); width: 100%; }
+.zoom input { flex: 1; min-width: 0; accent-color: var(--accent); }
+
+/* Plan */
+.plan-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; }
+.stat .k { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+.stat .v { font: 700 30px/1.1 var(--sans); font-stretch: 72%; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 13px; color: var(--muted); }
+.meter { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+.meter i { width: 20px; height: 13px; border: 1.5px solid var(--line-strong); border-radius: 2px; }
+.meter i.on { background: var(--accent); border-color: var(--accent); }
+.plan-h { font: 700 14px/1.2 var(--sans); font-stretch: 78%; text-transform: uppercase; letter-spacing: .08em; margin: 20px 0 10px; }
+.plist { display: grid; gap: 8px; }
+.prow { display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; }
+.prow img, .prow .ph { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; background: var(--surface-2); display: block; }
+.prow .t { font-weight: 600; overflow-wrap: anywhere; }
+.prow .m { color: var(--muted); font-size: 13px; }
+.prow .acts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+.prow .acts input[type="date"] { width: auto; padding: 6px 8px; font-size: 13px; }
+.prow .donecb { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; cursor: pointer; }
+.prow .donecb input { accent-color: var(--accent); }
+.prow.done .t { text-decoration: line-through; text-decoration-color: var(--line-strong); }
+.empty-plan { padding: 22px; text-align: center; color: var(--muted); border: 1.5px dashed var(--line-strong); border-radius: var(--r); }
+@media (max-width: 600px) { .prow { grid-template-columns: 52px minmax(0, 1fr); } .prow img, .prow .ph { width: 52px; height: 52px; } .prow .acts { grid-column: 1 / -1; justify-content: flex-start; } }
+
+/* Settings */
+.settings { max-width: 780px; }
+.days { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* Toast + modal */
+.toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 11px 16px; border-radius: 4px; font-size: 14px; box-shadow: var(--shadow); z-index: 50; max-width: calc(100% - 32px); width: max-content; }
+.modal { position: fixed; inset: 0; background: rgba(0, 0, 0, .62); display: grid; place-items: center; padding: 16px; z-index: 60; }
+.modal-card { background: var(--surface); border-radius: var(--r); padding: 18px; max-width: 760px; width: 100%; max-height: 92vh; overflow: auto; display: grid; gap: 12px; }
+.modal-card img { max-height: 62vh; width: 100%; object-fit: contain; background: var(--surface-2); }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } .drop, .results .pbody { transition: none; } }
+</style>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <div>
+        <h1>Kadr i Opis</h1>
+        <p class="tag">Wrzuć zdjęcie. Dostaniesz opisy, hashtagi, SEO i kadry pod każdą platformę.</p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Widoki">
+      <button type="button" role="tab" id="tab-new" data-view="new" aria-controls="view-new" aria-selected="true">Nowy post</button>
+      <button type="button" role="tab" id="tab-plan" data-view="plan" aria-controls="view-plan" aria-selected="false">Plan<span class="xs-hide">&nbsp;publikacji</span> <span class="count" id="planCount"></span></button>
+      <button type="button" role="tab" id="tab-settings" data-view="settings" aria-controls="view-settings" aria-selected="false">Ustawienia<span class="xs-hide">&nbsp;marki</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="view-new" class="view" role="tabpanel" aria-labelledby="tab-new">
+      <div class="studio">
+        <div class="col">
+          <div class="panel">
+            <div class="panel-h">
+              <span class="step">1</span><h2>Zdjęcia</h2>
+              <div class="aside"><span class="hint mono" id="photoCount">0 / 10</span><button type="button" class="btn ghost sm" id="clearBtn" hidden>Wyczyść</button></div>
+            </div>
+            <label class="drop" id="drop">
+              <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple aria-label="Wybierz zdjęcia">
+              <strong>Wrzuć zdjęcie</strong>
+              <span>albo przeciągnij tutaj · JPG, PNG, WebP · do 10 na karuzelę</span>
+            </label>
+            <div class="strip" id="strip" hidden></div>
+          </div>
+
+          <form class="panel" id="ctxForm" novalidate>
+            <div class="panel-h">
+              <span class="step">2</span><h2>Kontekst</h2>
+              <div class="aside"><span class="hint">im więcej konkretów, tym lepsze teksty</span></div>
+            </div>
+            <div class="field">
+              <label for="ctxType">Rodzaj materiału</label>
+              <select id="ctxType"></select>
+            </div>
+            <fieldset class="field">
+              <legend>Cel posta</legend>
+              <div class="chips" id="ctxGoal" role="group" aria-label="Cel posta"></div>
+            </fieldset>
+            <div class="field">
+              <label for="ctxPlace">Miejsce</label>
+              <input type="text" id="ctxPlace" autocomplete="off" placeholder="np. Dwór w Tomaszowicach, okolice Krakowa">
+            </div>
+            <div class="field">
+              <label for="ctxTags">Kogo oznaczyć</label>
+              <input type="text" id="ctxTags" autocomplete="off" placeholder="np. @para, @sala, @wizaz">
+            </div>
+            <div class="field">
+              <label for="ctxNotes">Co warto wiedzieć</label>
+              <textarea id="ctxNotes" rows="3" placeholder="Historia pary, pogoda, co było wyjątkowe, trudne światło… Na telefonie możesz to podyktować."></textarea>
+            </div>
+            <button type="submit" class="btn primary big" id="genBtn">Przygotuj post</button>
+            <div class="status" id="genStatus" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <div class="col">
+          <div class="panel results" id="results">
+            <div class="panel-h">
+              <span class="step">3</span><h2>Teksty</h2>
+              <span class="badge" id="exampleBadge">Przykład</span>
+              <div class="aside">
+                <button type="button" class="btn ghost sm" id="undoBtn" hidden>Cofnij poprawkę</button>
+                <button type="button" class="btn sm" id="saveBtn" hidden>Zapisz w planie</button>
+              </div>
+            </div>
+            <div class="analysis" id="analysis"></div>
+            <div class="ptabs" role="tablist" id="ptabs" aria-label="Platformy"></div>
+            <div class="pbody" id="pbody" role="tabpanel"></div>
+            <div class="refine" id="refine">
+              <span class="lbl">Popraw teksty</span>
+              <div class="chips" id="refineChips"></div>
+              <form class="refine-row" id="refineForm">
+                <label for="refineInput" class="vh">Własne polecenie</label>
+                <input type="text" id="refineInput" autocomplete="off" placeholder="np. dodaj, że mamy jeszcze 3 wolne soboty w 2027">
+                <button type="submit" class="btn sm" id="refineBtn">Popraw</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel crops">
+        <div class="panel-h">
+          <span class="step">4</span><h2>Kadry</h2>
+          <span class="hint" id="cropHint">Wgraj zdjęcie, a kadry przygotują się same.</span>
+          <div class="aside">
+            <span class="hint">Tło ramki</span>
+            <div class="seg" id="bgSeg" role="group" aria-label="Tło ramki">
+              <button type="button" data-bg="white" aria-pressed="true">Białe</button>
+              <button type="button" data-bg="black" aria-pressed="false">Czarne</button>
+              <button type="button" data-bg="blur" aria-pressed="false">Rozmyte</button>
+            </div>
+            <button type="button" class="btn sm primary" id="zipBtn">Pobierz wszystko (ZIP)</button>
+          </div>
+        </div>
+        <div class="formats" id="formats"></div>
+      </div>
+    </section>
+
+    <section id="view-plan" class="view" role="tabpanel" aria-labelledby="tab-plan" hidden>
+      <div class="plan-top" id="planStats"></div>
+      <div id="planList"></div>
+    </section>
+
+    <section id="view-settings" class="view" role="tabpanel" aria-labelledby="tab-settings" hidden>
+      <form class="panel settings" id="setForm" novalidate>
+        <div class="panel-h"><h2>Ustawienia marki</h2><div class="aside"><span class="hint" id="storeNote"></span></div></div>
+        <p class="note" style="margin-bottom:16px">Te informacje trafiają do każdego zapytania, więc teksty brzmią jak Ty i celują w Twoje frazy.</p>
+        <div class="grid2">
+          <div class="field"><label for="s-brand">Nazwa marki</label><input type="text" id="s-brand"></div>
+          <div class="field"><label for="s-person">Imię i nazwisko</label><input type="text" id="s-person"></div>
+          <div class="field"><label for="s-city">Miasto</label><input type="text" id="s-city"></div>
+          <div class="field"><label for="s-area">Obszar działania</label><input type="text" id="s-area"></div>
+          <div class="field"><label for="s-website">Strona</label><input type="url" id="s-website"></div>
+          <div class="field"><label for="s-instagram">Instagram</label><input type="text" id="s-instagram" placeholder="@twojprofil"></div>
+        </div>
+        <div class="field"><label for="s-services">Usługi</label><input type="text" id="s-services"></div>
+        <div class="grid2">
+          <div class="field"><label for="s-voice">Forma wypowiedzi</label>
+            <select id="s-voice">
+              <option value="ja-m">Ja, forma męska („fotografowałem”)</option>
+              <option value="ja-f">Ja, forma żeńska („fotografowałam”)</option>
+              <option value="my">My, zespół („fotografowaliśmy”)</option>
+            </select></div>
+          <div class="field"><label for="s-emoji">Emoji</label>
+            <select id="s-emoji">
+              <option value="none">Bez emoji</option>
+              <option value="few">Oszczędnie (1–2)</option>
+              <option value="some">Swobodnie</option>
+            </select></div>
+        </div>
+        <div class="field"><label for="s-tone">Ton wypowiedzi</label><input type="text" id="s-tone"></div>
+        <div class="field"><label for="s-cta">Stałe wezwanie do działania</label><input type="text" id="s-cta"></div>
+        <div class="field"><label for="s-keywords">Frazy SEO (po przecinku)</label><textarea id="s-keywords" rows="2"></textarea></div>
+        <div class="field"><label for="s-hashtags">Stałe hashtagi marki (liczą się do limitu 5)</label><input type="text" id="s-hashtags" placeholder="np. #twojamarka"></div>
+        <div class="grid2">
+          <div class="field"><label for="s-goal">Cel: postów tygodniowo</label><input type="number" id="s-goal" min="1" max="14" step="1"></div>
+          <fieldset class="field"><legend>Dni publikacji</legend><div class="days chips" id="s-days" role="group" aria-label="Dni publikacji"></div></fieldset>
+        </div>
+        <button type="submit" class="btn primary" id="setSave">Zapisz ustawienia</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="modal" id="saveModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="saveTitle">
+    <div class="panel-h" style="margin:0"><h2 id="saveTitle">Zapisz plik</h2><div class="aside"><button type="button" class="btn sm" id="saveClose">Zamknij</button></div></div>
+    <p class="note" id="saveMsg">Pobieranie nie działa w tym widoku. Przytrzymaj obraz (telefon) albo kliknij go prawym przyciskiem i wybierz „Zapisz obraz jako…”.</p>
+    <p class="mono note" id="saveName"></p>
+    <img id="saveImg" alt="Podgląd pliku do zapisania">
+  </div>
+</div>
+<script>
+'use strict';
+
+/* ---------- Stałe ---------- */
+const MAX_PHOTOS = 10;
+
+// Ustawienia ogólne; dane marki są zapisane w bazie narzędzia (settings/brand).
+const DEFAULTS = {
+  brand: '',
+  person: '',
+  city: '',
+  area: 'cała Polska',
+  website: '',
+  instagram: '',
+  services: 'fotografia ślubna, film ślubny, sesje plenerowe i narzeczeńskie',
+  voice: 'my',
+  emoji: 'few',
+  tone: 'ciepły, elegancki i konkretny; premium bez nadęcia',
+  cta: 'Wolne terminy: napisz w wiadomości prywatnej datę i miejsce ślubu.',
+  keywords: 'fotograf ślubny, kamerzysta ślubny, film ślubny, sesja narzeczeńska, sesja plenerowa',
+  hashtags: '',
+  weeklyGoal: 2,
+  days: [2, 5],
+};
+
+const FORMATS = [
+  { id: 'ig45', name: 'Instagram · post', w: 1080, h: 1350, ratio: '4:5', tag: 'instagram-4x5', note: 'Bezpieczny standard feedu i karuzeli.' },
+  { id: 'ig34', name: 'Instagram · pełna wysokość', w: 1080, h: 1440, ratio: '3:4', tag: 'instagram-3x4', note: 'Najwyższy post z aplikacji; siatka profilu go nie przycina.' },
+  { id: 'story', name: 'Stories i rolki', w: 1080, h: 1920, ratio: '9:16', tag: 'stories-9x16', note: 'Zostaw wolne ok. 250 px u góry i u dołu na napisy.' },
+  { id: 'pin', name: 'Pinterest', w: 1000, h: 1500, ratio: '2:3', tag: 'pinterest-2x3', note: 'Standardowy pin.' },
+  { id: 'sq', name: 'Kwadrat', w: 1080, h: 1080, ratio: '1:1', tag: 'kwadrat-1x1', note: 'Facebook, miniatury, reklamy.' },
+  { id: 'wide', name: 'Strona, blog, Facebook', w: 1920, h: 1080, ratio: '16:9', tag: 'poziom-16x9', note: 'Wpis na blogu, okładka, YouTube.' },
+  { id: 'gbp', name: 'Profil Firmy w Google', w: 1200, h: 900, ratio: '4:3', tag: 'google-4x3', note: 'Post i zdjęcia w Mapach Google.' },
+];
+const FMT = Object.fromEntries(FORMATS.map(f => [f.id, f]));
+
+const TYPES = ['Ślub · reportaż', 'Przygotowania', 'Ceremonia', 'Przyjęcie weselne', 'Sesja narzeczeńska', 'Sesja plenerowa lub poślubna', 'Detale i dekoracje', 'Kulisy pracy', 'Teledysk lub film', 'Inne'];
+
+const GOALS = [
+  { id: 'inspiracja', label: 'Inspiracja', prompt: 'inspiracja i zasięg: tekst, który pary zapiszą i wyślą sobie nawzajem' },
+  { id: 'rezerwacje', label: 'Rezerwacje', prompt: 'rezerwacje: zachęta do kontaktu i podania daty ślubu' },
+  { id: 'porada', label: 'Porada dla par', prompt: 'wartość dla par: praktyczna porada związana z tym, co widać na zdjęciu' },
+  { id: 'zaufanie', label: 'Zaufanie', prompt: 'zaufanie: pokazanie sposobu pracy, doświadczenia i podejścia do pary' },
+];
+
+const DAY_LABELS = [[1, 'Pn'], [2, 'Wt'], [3, 'Śr'], [4, 'Cz'], [5, 'Pt'], [6, 'Sb'], [0, 'Nd']];
+
+/* ---------- Stan ---------- */
+const S = {
+  photos: [], active: 0,
+  result: null, isExample: true, history: [],
+  igVariant: 0, pTab: 'instagram', frameBg: 'white',
+  settings: { ...DEFAULTS }, posts: [], savedPostId: null,
+  ctx: { type: TYPES[0], goal: 'inspiracja', place: '', tags: '', notes: '' },
+  busy: false, ctl: null, cards: {},
+};
+
+/* ---------- Narzędzia ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k.startsWith('on') && typeof v === 'function') e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : String(v));
+  }
+  for (const kid of kids.flat(Infinity)) {
+    if (kid == null || kid === false) continue;
+    e.append(kid.nodeType ? kid : String(kid));
+  }
+  return e;
+}
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const uid = () => Math.random().toString(36).slice(2, 10);
+const str = v => (typeof v === 'string' ? v : v == null ? '' : String(v)).trim();
+const arr = v => (Array.isArray(v) ? v : []);
+const num01 = (v, d) => { const n = Number(v); return Number.isFinite(n) ? clamp(n, 0, 1) : d; };
+const len = s => [...(s || '')].length;
+const clone = v => JSON.parse(JSON.stringify(v));
+const toBlob = (canvas, type = 'image/jpeg', q = 0.92) =>
+  new Promise((res, rej) => canvas.toBlob(b => (b ? res(b) : rej(new Error('toBlob'))), type, q));
+
+const PL_MAP = { ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z' };
+function slugify(s, max = 60) {
+  return str(s).toLowerCase().replace(/[ąćęłńóśźż]/g, c => PL_MAP[c])
+    .normalize('NFKD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, max).replace(/-+$/, '');
+}
+
+const WD = ['nd', 'pn', 'wt', 'śr', 'cz', 'pt', 'sb'];
+const pad = n => String(n).padStart(2, '0');
+const toISO = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const fromISO = s => { const [y, m, d] = String(s || '').split('-').map(Number); return y && m && d ? new Date(y, m - 1, d, 12) : null; };
+const fmtDay = s => { const d = fromISO(s); return d ? `${WD[d.getDay()]} ${pad(d.getDate())}.${pad(d.getMonth() + 1)}` : 'bez daty'; };
+function weekBounds(ref = new Date()) {
+  const start = new Date(ref); start.setHours(0, 0, 0, 0);
+  start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+  const end = new Date(start); end.setDate(start.getDate() + 7);
+  return [start, end];
+}
+
+/* ---------- Możliwości strony w Claude ---------- */
+const CL = window.claude && typeof window.claude.use === 'function' ? window.claude : null;
+const cap = name => (CL ? CL.use(name).catch(() => null) : Promise.resolve(null));
+const samplePromise = cap('sample');
+const dlPromise = cap('downloads');
+const dbPromise = cap('db');
+
+/* ---------- Zapis: baza artefaktu albo przeglądarka ---------- */
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
+};
+const Store = {
+  db: null, mode: 'local', cb: null,
+  async init() { this.db = await dbPromise; this.mode = this.db ? 'db' : 'local'; },
+  async loadSettings() {
+    if (this.db) {
+      try { const s = await this.db.doc('settings/brand').get(); return s.exists ? s.data() : null; }
+      catch (e) { console.warn('settings', e); return null; }
+    }
+    return LS.get('kio.settings', null);
+  },
+  async saveSettings(v) {
+    if (this.db) return this.db.doc('settings/brand').set(v);
+    if (!LS.set('kio.settings', v)) throw { code: 'storage' };
+  },
+  watchPosts(cb) {
+    if (this.db) {
+      return this.db.collection('posts').onSnapshot(
+        snap => cb(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
+        e => { console.warn('posts', e); toast('Nie mogę wczytać planu publikacji. Odśwież stronę.'); });
+    }
+    this.cb = cb; cb(LS.get('kio.posts', [])); return () => {};
+  },
+  async addPost(p) {
+    if (this.db) { const ref = await this.db.collection('posts').add(p); return ref.id; }
+    const list = LS.get('kio.posts', []); const id = uid();
+    list.push({ id, ...p });
+    if (!LS.set('kio.posts', list)) throw { code: 'storage' };
+    this.cb?.(list); return id;
+  },
+  async updatePost(id, patch) {
+    if (this.db) return this.db.doc('posts/' + id).update(patch);
+    const list = LS.get('kio.posts', []); const i = list.findIndex(x => x.id === id);
+    if (i < 0) return;
+    list[i] = { ...list[i], ...patch };
+    if (!LS.set('kio.posts', list)) throw { code: 'storage' };
+    this.cb?.(list);
+  },
+  async deletePost(id) {
+    if (this.db) return this.db.doc('posts/' + id).delete();
+    const list = LS.get('kio.posts', []).filter(x => x.id !== id);
+    LS.set('kio.posts', list); this.cb?.(list);
+  },
+};
+
+/* ---------- Komunikaty ---------- */
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 3600);
+}
+function setStatus(msg, kind = '') {
+  const s = $('#genStatus'); s.className = 'status' + (kind && kind !== 'busy' ? ' ' + kind : '');
+  s.replaceChildren();
+  if (kind === 'busy') s.append(el('span', { class: 'spin', 'aria-hidden': 'true' }));
+  if (msg) s.append(el('span', { text: msg }));
+  if (kind === 'busy') s.append(el('button', { type: 'button', class: 'btn ghost sm', onclick: () => S.ctl?.abort() }, 'Zatrzymaj'));
+}
+
+/* ---------- Kopiowanie ---------- */
+function copyText(text, btn) {
+  const done = ok => {
+    if (!ok) { toast('Nie mogę skopiować automatycznie. Zaznacz tekst i skopiuj ręcznie.'); return; }
+    if (!btn) { toast('Skopiowano'); return; }
+    const old = btn.textContent; btn.textContent = 'Skopiowano'; btn.disabled = true;
+    setTimeout(() => { btn.textContent = old; btn.disabled = false; }, 1300);
+  };
+  const fallback = () => {
+    let ok = false;
+    try {
+      const ta = el('textarea', { style: 'position:fixed;left:-9999px;top:0', 'aria-hidden': 'true' });
+      ta.value = text; document.body.append(ta); ta.select(); ok = document.execCommand('copy'); ta.remove();
+    } catch { ok = false; }
+    done(ok);
+  };
+  try { navigator.clipboard.writeText(text).then(() => done(true), fallback); }
+  catch { fallback(); }
+}
+
+/* ---------- Pliki: zapis i ZIP ---------- */
+async function saveFile(filename, blob) {
+  const dl = await dlPromise;
+  if (!dl) { showSaveModal(filename, blob); return false; }
+  try { await dl.save({ filename, data: blob }); toast('Zapisano: ' + filename); return true; }
+  catch (e) {
+    const code = e?.code;
+    if (code === 'declined') return false;
+    if (code === 'rate_limited') { toast('Najpierw zamknij poprzednie okno zapisu.'); return false; }
+    if (['unavailable', 'not_granted', 'capability_disabled', 'capability_removed'].includes(code)) { showSaveModal(filename, blob); return false; }
+    toast('Nie udało się zapisać pliku. Spróbuj ponownie.'); return false;
+  }
+}
+let modalUrl = null;
+function showSaveModal(filename, blob) {
+  const isImg = /^image\//.test(blob.type) || /\.(jpe?g|png)$/i.test(filename);
+  if (modalUrl) URL.revokeObjectURL(modalUrl);
+  modalUrl = URL.createObjectURL(blob);
+  $('#saveName').textContent = filename;
+  $('#saveImg').hidden = !isImg;
+  if (isImg) $('#saveImg').src = modalUrl;
+  $('#saveMsg').textContent = isImg
+    ? 'Pobieranie nie działa w tym widoku. Przytrzymaj obraz (telefon) albo kliknij go prawym przyciskiem i wybierz „Zapisz obraz jako…”.'
+    : 'Pobieranie nie działa w tym widoku. Otwórz narzędzie na claude.ai w przeglądarce albo pobierz kadry pojedynczo.';
+  $('#saveModal').hidden = false; $('#saveClose').focus();
+}
+
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+  return t;
+})();
+function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+// Prosty ZIP bez kompresji (JPG i tak się nie kompresuje).
+async function makeZip(files) {
+  const enc = new TextEncoder(); const parts = []; const central = []; let offset = 0;
+  const d = new Date();
+  const time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  const date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const f of files) {
+    const data = new Uint8Array(await f.blob.arrayBuffer()); const name = enc.encode(f.name); const crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+    lh.setUint16(10, time, true); lh.setUint16(12, date, true); lh.setUint32(14, crc, true);
+    lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true); lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+    parts.push(lh, name, data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true);
+    ch.setUint16(10, 0, true); ch.setUint16(12, time, true); ch.setUint16(14, date, true); ch.setUint32(16, crc, true);
+    ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true); ch.setUint16(28, name.length, true);
+    ch.setUint16(30, 0, true); ch.setUint16(32, 0, true); ch.setUint16(34, 0, true); ch.setUint16(36, 0, true);
+    ch.setUint32(38, 0, true); ch.setUint32(42, offset, true);
+    central.push(ch, name);
+    offset += 30 + name.length + data.length;
+  }
+  const cdSize = central.reduce((s, p) => s + p.byteLength, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, end], { type: 'application/zip' });
+}
+
+/* ---------- Rysowanie ---------- */
+const srcDims = s => [s.naturalWidth || s.width, s.naturalHeight || s.height];
+
+// Skaluje w kilku krokach, żeby zmniejszone zdjęcie nie było poszarpane.
+function drawHQ(ctx, src, sx, sy, sw, sh, dx, dy, dw, dh) {
+  const [W, H] = srcDims(src);
+  sx = clamp(sx, 0, W - 1); sy = clamp(sy, 0, H - 1);
+  sw = Math.min(sw, W - sx); sh = Math.min(sh, H - sy);
+  let s = src, x = sx, y = sy, w = sw, h = sh;
+  while (w > dw * 2.2 && h > dh * 2.2) {
+    const nw = Math.round(w / 2), nh = Math.round(h / 2);
+    const c = document.createElement('canvas'); c.width = nw; c.height = nh;
+    const cx = c.getContext('2d'); cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
+    cx.drawImage(s, x, y, w, h, 0, 0, nw, nh);
+    s = c; x = 0; y = 0; w = nw; h = nh;
+  }
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(s, x, y, w, h, dx, dy, dw, dh);
+}
+
+function drawBlurBg(ctx, src, outW, outH) {
+  const [W, H] = srcDims(src);
+  const sc = Math.max(outW / W, outH / H);
+  const cw = outW / sc, ch = outH / sc;
+  const t = document.createElement('canvas');
+  t.width = Math.max(4, Math.round(outW / 24)); t.height = Math.max(4, Math.round(outH / 24));
+  drawHQ(t.getContext('2d'), src, (W - cw) / 2, (H - ch) / 2, cw, ch, 0, 0, t.width, t.height);
+  const m = document.createElement('canvas'); m.width = t.width * 4; m.height = t.height * 4;
+  const mc = m.getContext('2d'); mc.imageSmoothingEnabled = true; mc.imageSmoothingQuality = 'high';
+  mc.drawImage(t, 0, 0, m.width, m.height);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(m, 0, 0, outW, outH);
+  ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.fillRect(0, 0, outW, outH);
+}
+
+/* ---------- Kadrowanie ---------- */
+function baseSize(p, fmt) { const A = fmt.w / fmt.h; return p.w / p.h > A ? [p.h * A, p.h] : [p.w, p.w / A]; }
+function cropRect(p, fmt, st) {
+  const [bw, bh] = baseSize(p, fmt); const w = bw / st.z, h = bh / st.z;
+  return { x: clamp(st.cx * p.w - w / 2, 0, p.w - w), y: clamp(st.cy * p.h - h / 2, 0, p.h - h), w, h };
+}
+function normalizeCenter(p, fmt, st) { const r = cropRect(p, fmt, st); st.cx = (r.x + r.w / 2) / p.w; st.cy = (r.y + r.h / 2) / p.h; }
+function keepShare(p, fmt) { const [bw, bh] = baseSize(p, fmt); return (bw * bh) / (p.w * p.h); }
+
+// Kadr ustawiony na punkt kluczowy; jeśli motyw się mieści, cały zostaje w kadrze.
+function autoCrop(p, fmt) {
+  const [w, h] = baseSize(p, fmt);
+  const pt = p.ai?.point || { x: 0.5, y: 0.42 }; const b = p.ai?.box;
+  const axis = (size, full, f, b0, b1) => {
+    let start = f * full - size / 2;
+    if (b && (b1 - b0) * full <= size) start = clamp(start, b1 * full - size, b0 * full);
+    return clamp(start, 0, full - size);
+  };
+  const x = axis(w, p.w, pt.x, b?.x0, b?.x1), y = axis(h, p.h, pt.y, b?.y0, b?.y1);
+  let mode = keepShare(p, fmt) < 0.5 ? 'frame' : 'crop';
+  const advice = S.photos.length <= 1 && !S.isExample ? S.result?.crops?.[fmt.id] : null;
+  if (advice === 'kadr') mode = 'crop'; else if (advice === 'ramka') mode = 'frame';
+  return { cx: (x + w / 2) / p.w, cy: (y + h / 2) / p.h, z: 1, mode, touched: false };
+}
+
+function drawFormat(ctx, outW, outH, p, fmt, st, src) {
+  const [SW, SH] = srcDims(src); const k = SW / p.w;
+  if (st.mode === 'frame') {
+    if (S.frameBg === 'blur') drawBlurBg(ctx, p.preview, outW, outH);
+    else { ctx.fillStyle = S.frameBg === 'black' ? '#0B0B0C' : '#FFFFFF'; ctx.fillRect(0, 0, outW, outH); }
+    const m = S.frameBg === 'blur' ? 0 : Math.round(Math.min(outW, outH) * 0.045);
+    const sc = Math.min((outW - 2 * m) / SW, (outH - 2 * m) / SH);
+    const dw = SW * sc, dh = SH * sc;
+    drawHQ(ctx, src, 0, 0, SW, SH, (outW - dw) / 2, (outH - dh) / 2, dw, dh);
+  } else {
+    const r = cropRect(p, fmt, st);
+    drawHQ(ctx, src, r.x * k, r.y * k, r.w * k, r.h * k, 0, 0, outW, outH);
+  }
+}
+
+/* ---------- Zdjęcia ---------- */
+function makeThumb(src, size) {
+  const [W, H] = srcDims(src); const s = Math.min(W, H);
+  const c = document.createElement('canvas'); c.width = size; c.height = size;
+  drawHQ(c.getContext('2d'), src, (W - s) / 2, (H - s) / 2, s, s, 0, 0, size, size);
+  return c.toDataURL('image/jpeg', 0.72);
+}
+async function decodeUrl(url) {
+  const img = new Image(); img.decoding = 'async'; img.src = url; await img.decode(); return img;
+}
+async function loadPhoto(file) {
+  const url = URL.createObjectURL(file);
+  let img;
+  try { img = await decodeUrl(url); } catch (e) { URL.revokeObjectURL(url); throw e; }
+  const w = img.naturalWidth, h = img.naturalHeight;
+  if (!w || !h) { URL.revokeObjectURL(url); throw new Error('empty'); }
+  const k = Math.min(1, 1600 / Math.max(w, h));
+  const preview = document.createElement('canvas');
+  preview.width = Math.max(1, Math.round(w * k)); preview.height = Math.max(1, Math.round(h * k));
+  drawHQ(preview.getContext('2d'), img, 0, 0, w, h, 0, 0, preview.width, preview.height);
+  // Pełna rozdzielczość jest dekodowana ponownie dopiero przy eksporcie, żeby oszczędzać pamięć telefonu.
+  return { id: uid(), name: file.name, url, w, h, preview, thumb: makeThumb(preview, 240), ai: null, crops: {} };
+}
+const aiOf = a => (a ? { point: a.point, box: a.box } : null);
+
+async function addFiles(fileList) {
+  const files = [...fileList].filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name));
+  if (!files.length) { toast('To nie wygląda na zdjęcie. Wybierz plik JPG, PNG lub WebP.'); return; }
+  const room = MAX_PHOTOS - S.photos.length;
+  if (room <= 0) { toast(`Maksymalnie ${MAX_PHOTOS} zdjęć w jednym poście.`); return; }
+  if (files.length > room) toast(`Dodaję ${room} z ${files.length}. Limit to ${MAX_PHOTOS} zdjęć.`);
+  const wasEmpty = !S.photos.length;
+  $('#photoCount').textContent = 'wczytuję…';
+  for (const f of files.slice(0, room)) {
+    try {
+      const p = await loadPhoto(f);
+      if (!S.isExample) p.ai = aiOf(S.result?.photos?.[S.photos.length]);
+      S.photos.push(p);
+      for (const fmt of FORMATS) p.crops[fmt.id] = autoCrop(p, fmt);
+    } catch { toast(`Nie mogę otworzyć „${f.name}”. Zapisz je jako JPG i spróbuj ponownie.`); }
+  }
+  if (wasEmpty) S.active = 0;
+  renderStrip(); renderFormats();
+}
+function removePhoto(i) {
+  const [p] = S.photos.splice(i, 1);
+  if (p) URL.revokeObjectURL(p.url);
+  if (!S.isExample && S.result) {
+    if (S.result.photos.length > i) S.result.photos.splice(i, 1);
+    S.result.analysis.order = [];
+  }
+  S.active = clamp(S.active > i ? S.active - 1 : S.active, 0, Math.max(0, S.photos.length - 1));
+  renderStrip(); renderFormats(); renderResults();
+}
+function clearAll() {
+  S.photos.forEach(p => URL.revokeObjectURL(p.url));
+  S.photos = []; S.active = 0;
+  S.result = clone(EXAMPLE); S.isExample = true; S.history = []; S.savedPostId = null; S.igVariant = 0;
+  setStatus('');
+  renderStrip(); renderFormats(); renderResults();
+}
+function applyAiToPhotos() {
+  const rp = S.result?.photos || [];
+  S.photos.forEach((p, i) => {
+    if (!rp[i]) return;
+    p.ai = aiOf(rp[i]);
+    for (const f of FORMATS) if (!p.crops[f.id]?.touched) p.crops[f.id] = autoCrop(p, f);
+  });
+}
+function applyOrder() {
+  const order = S.result?.analysis?.order || []; const n = S.photos.length;
+  if (order.length !== n || new Set(order).size !== n || order.some(k => k < 1 || k > n)) { toast('Nie mogę zastosować tej kolejności.'); return; }
+  S.photos = order.map(k => S.photos[k - 1]);
+  if (S.result.photos.length === n) S.result.photos = order.map(k => S.result.photos[k - 1]);
+  const cov = S.result.analysis.cover;
+  S.result.analysis.cover = cov ? order.indexOf(cov) + 1 : 1;
+  S.result.analysis.order = order.map((_, i) => i + 1);
+  S.active = 0; renderStrip(); renderFormats(); renderResults();
+  toast('Ustawiono kolejność karuzeli.');
+}
+
+function renderStrip() {
+  const strip = $('#strip'); strip.replaceChildren();
+  strip.hidden = !S.photos.length;
+  $('#photoCount').textContent = `${S.photos.length} / ${MAX_PHOTOS}`;
+  $('#clearBtn').hidden = !S.photos.length && S.isExample;
+  const cover = S.isExample ? null : S.result?.analysis?.cover;
+  S.photos.forEach((p, i) => {
+    strip.append(el('div', { class: 'thumb' + (i === S.active ? ' active' : '') },
+      el('button', { type: 'button', class: 'sel', 'aria-label': `Zdjęcie ${i + 1}: pokaż kadry`, 'aria-pressed': String(i === S.active),
+        onclick: () => { S.active = i; renderStrip(); renderFormats(); } }, el('img', { src: p.thumb, alt: '' })),
+      el('span', { class: 'n', text: String(i + 1) }),
+      S.photos.length > 1 && cover === i + 1 ? el('span', { class: 'cov', text: 'okładka' }) : null,
+      el('button', { type: 'button', class: 'rm', 'aria-label': `Usuń zdjęcie ${i + 1}`, onclick: () => removePhoto(i) }, '×')));
+  });
+}
+
+/* ---------- Karty formatów ---------- */
+function renderFormats() {
+  const wrap = $('#formats'); wrap.replaceChildren(); S.cards = {};
+  const p = S.photos[S.active];
+  $('#cropHint').textContent = !p ? 'Wgraj zdjęcie, a kadry przygotują się same.'
+    : (S.photos.length > 1 ? `Zdjęcie ${S.active + 1} z ${S.photos.length}. ` : '') + 'Przeciągnij podgląd, żeby przesunąć kadr.';
+  for (const f of FORMATS) {
+    const card = {};
+    const box = el('div', { class: 'box', style: `--ar:${f.w} / ${f.h}` });
+    let controls = null;
+    if (p) {
+      const st = p.crops[f.id];
+      card.canvas = el('canvas', { tabindex: '0', 'aria-label': `Kadr ${f.ratio}. Strzałki przesuwają kadr, plus i minus zmieniają powiększenie.` });
+      card.canvas.width = 480; card.canvas.height = Math.round((480 * f.h) / f.w);
+      box.append(card.canvas);
+      card.seg = el('div', { class: 'seg', role: 'group', 'aria-label': 'Dopasowanie' },
+        el('button', { type: 'button', 'data-mode': 'crop', 'aria-pressed': String(st.mode === 'crop'), onclick: () => setMode(f.id, 'crop') }, 'Kadr'),
+        el('button', { type: 'button', 'data-mode': 'frame', 'aria-pressed': String(st.mode === 'frame'), onclick: () => setMode(f.id, 'frame') }, 'Ramka'));
+      card.move = el('button', { type: 'button', class: 'btn sm ghost', onclick: () => toggleEdit(f.id) }, 'Przesuń');
+      card.dl = el('button', { type: 'button', class: 'btn sm', onclick: () => downloadOne(f.id) }, 'Pobierz JPG');
+      card.zoomIn = el('input', { type: 'range', min: '100', max: '250', step: '5', value: String(Math.round(st.z * 100)),
+        'aria-label': 'Powiększenie kadru', oninput: e => setZoom(f.id, +e.target.value) });
+      card.zoom = el('label', { class: 'zoom' }, 'Zoom', card.zoomIn);
+      controls = [el('div', { class: 'fmt-ctl' }, card.seg, card.move, card.dl), card.zoom];
+    } else {
+      box.append(el('span', { class: 'empty', text: `${f.w} × ${f.h} px` }));
+    }
+    card.root = el('div', { class: 'fmt' },
+      el('div', { class: 'fmt-h' }, el('strong', { text: f.name }), el('span', { class: 'mono', text: `${f.ratio} · ${f.w}×${f.h}` })),
+      el('div', { class: 'frame' }, box),
+      el('p', { class: 'fmt-note', text: f.note }),
+      controls);
+    S.cards[f.id] = card; wrap.append(card.root);
+    if (p) { attachPan(card, f.id); renderPreview(f.id); }
+  }
+}
+function renderPreview(id) {
+  const card = S.cards[id], p = S.photos[S.active];
+  if (!card?.canvas || !p) return;
+  const st = p.crops[id]; const c = card.canvas; const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  drawFormat(ctx, c.width, c.height, p, FMT[id], st, p.preview);
+  $$('button', card.seg).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === st.mode)));
+  const crop = st.mode === 'crop';
+  card.zoom.hidden = !crop; card.move.hidden = !crop;
+  if (!crop) card.root.classList.remove('editing');
+  card.move.textContent = card.root.classList.contains('editing') ? 'Gotowe' : 'Przesuń';
+  card.zoomIn.value = String(Math.round(st.z * 100));
+}
+const pendingIds = new Set(); let rafId = 0;
+function schedule(id) {
+  pendingIds.add(id);
+  if (!rafId) rafId = requestAnimationFrame(() => { rafId = 0; const ids = [...pendingIds]; pendingIds.clear(); ids.forEach(renderPreview); });
+}
+function renderAllPreviews() { FORMATS.forEach(f => renderPreview(f.id)); }
+function setMode(id, mode) { const st = S.photos[S.active]?.crops[id]; if (!st) return; st.mode = mode; st.touched = true; renderPreview(id); }
+function setZoom(id, v) {
+  const p = S.photos[S.active]; const st = p?.crops[id]; if (!st) return;
+  st.z = clamp(v / 100, 1, 2.5); normalizeCenter(p, FMT[id], st); st.touched = true; schedule(id);
+}
+function toggleEdit(id) {
+  const card = S.cards[id]; card.root.classList.toggle('editing'); renderPreview(id);
+  if (card.root.classList.contains('editing')) card.canvas.focus();
+}
+function attachPan(card, id) {
+  const c = card.canvas; let drag = null;
+  c.addEventListener('pointerdown', e => {
+    const st = S.photos[S.active]?.crops[id];
+    if (!st || st.mode !== 'crop') return;
+    if (e.pointerType === 'touch' && !card.root.classList.contains('editing')) return;
+    drag = { x: e.clientX, y: e.clientY, cx: st.cx, cy: st.cy, pid: e.pointerId };
+    try { c.setPointerCapture(e.pointerId); } catch { /* bez przechwycenia też działa */ }
+    c.style.cursor = 'grabbing'; e.preventDefault();
+  });
+  c.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.pid) return;
+    const p = S.photos[S.active]; const st = p.crops[id]; const f = FMT[id];
+    const r = cropRect(p, f, st); const b = c.getBoundingClientRect();
+    st.cx = drag.cx - ((e.clientX - drag.x) * (r.w / b.width)) / p.w;
+    st.cy = drag.cy - ((e.clientY - drag.y) * (r.h / b.height)) / p.h;
+    normalizeCenter(p, f, st); st.touched = true; schedule(id);
+  });
+  const end = e => { if (drag && e.pointerId === drag.pid) { drag = null; c.style.cursor = ''; } };
+  c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+  c.addEventListener('keydown', e => {
+    const p = S.photos[S.active]; const st = p?.crops[id];
+    if (!st || st.mode !== 'crop') return;
+    const f = FMT[id]; const r = cropRect(p, f, st);
+    const moves = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+    if (moves[e.key]) { const [dx, dy] = moves[e.key]; st.cx += (dx * 0.04 * r.w) / p.w; st.cy += (dy * 0.04 * r.h) / p.h; }
+    else if (e.key === '+' || e.key === '=') st.z = clamp(st.z + 0.1, 1, 2.5);
+    else if (e.key === '-') st.z = clamp(st.z - 0.1, 1, 2.5);
+    else return;
+    e.preventDefault(); normalizeCenter(p, f, st); st.touched = true; renderPreview(id);
+  });
+}
+
+/* ---------- Eksport ---------- */
+function fileBase(i) {
+  const fromAi = S.isExample ? '' : S.result?.photos?.[i]?.file;
+  const base = slugify(fromAi || (!S.isExample && S.result?.seo?.slug) || [S.ctx.type, S.ctx.place, S.settings.brand].filter(Boolean).join(' ')) || 'zdjecie';
+  return S.photos.length > 1 ? `${base}-${i + 1}` : base;
+}
+const fileName = (i, id) => `${fileBase(i)}-${FMT[id].tag}.jpg`;
+async function exportBlob(p, fmt, full) {
+  const c = document.createElement('canvas'); c.width = fmt.w; c.height = fmt.h;
+  drawFormat(c.getContext('2d'), fmt.w, fmt.h, p, fmt, p.crops[fmt.id], full);
+  return toBlob(c, 'image/jpeg', 0.92);
+}
+async function downloadOne(id) {
+  const p = S.photos[S.active]; if (!p) return;
+  const btn = S.cards[id]?.dl; if (btn) { btn.disabled = true; btn.textContent = 'Przygotowuję…'; }
+  try { const full = await decodeUrl(p.url); await saveFile(fileName(S.active, id), await exportBlob(p, FMT[id], full)); }
+  catch (e) { console.warn(e); toast('Nie udało się przygotować pliku. Spróbuj ponownie.'); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = 'Pobierz JPG'; } }
+}
+async function downloadZip() {
+  if (!S.photos.length) { toast('Najpierw wgraj zdjęcie.'); return; }
+  const btn = $('#zipBtn'); const old = btn.textContent; btn.disabled = true;
+  try {
+    const files = [];
+    for (let i = 0; i < S.photos.length; i++) {
+      btn.textContent = `Przygotowuję ${i + 1}/${S.photos.length}…`;
+      const p = S.photos[i]; const full = await decodeUrl(p.url);
+      for (const f of FORMATS) files.push({ name: fileName(i, f.id), blob: await exportBlob(p, f, full) });
+    }
+    if (!S.isExample && S.result) files.push({ name: 'teksty.txt', blob: new Blob([textsExport()], { type: 'text/plain' }) });
+    btn.textContent = 'Pakuję…';
+    const zip = await makeZip(files);
+    const base = slugify((!S.isExample && S.result?.seo?.slug) || [S.ctx.type, S.ctx.place].filter(Boolean).join(' ')) || 'post';
+    await saveFile(`${base}-kadry.zip`, zip);
+  } catch (e) { console.warn(e); toast('Nie udało się przygotować paczki. Pobierz kadry pojedynczo.'); }
+  finally { btn.disabled = false; btn.textContent = old; }
+}
+
+/* ---------- Przykładowy wynik (pierwszy widok) ---------- */
+const EXAMPLE = {
+  analysis: {
+    summary: 'Para idzie przez łąkę pod światło zachodzącego słońca. Najmocniejsze są kontra, ruch welonu i niepozowane gesty.',
+    bestUse: 'Okładka karuzeli z sesji i pin na Pinterest, bo ciepłe światło dobrze działa jako inspiracja.',
+    cover: 1, order: [1],
+    tips: ['Daj to zdjęcie jako pierwsze w karuzeli, detale dalej.', 'Po publikacji wrzuć post do stories z ankietą o złotej godzinie.'],
+  },
+  photos: [{ point: { x: 0.5, y: 0.4 }, box: { x0: 0.3, y0: 0.15, x1: 0.7, y1: 0.95 },
+    alt: 'Para młoda idzie przez łąkę pod światło zachodzącego słońca, welon unosi się na wietrze',
+    file: 'sesja-plenerowa-zachod-slonca-krakow' }],
+  crops: { ig45: 'kadr', ig34: 'kadr', story: 'ramka', pin: 'kadr', sq: 'kadr', wide: 'kadr', gbp: 'kadr',
+    note: 'Poziome zdjęcie: w 4:5 kadr zostawia parę w centrum, w stories lepsza ramka z rozmytym tłem.' },
+  instagram: {
+    variants: [
+      { name: 'Historia', text: 'Dwadzieścia minut. Tyle trwała złota godzina tego wieczoru pod Krakowem.\n\nNie ustawiałem ich do zdjęcia. Poprosiłem tylko, żeby przeszli się przez łąkę i porozmawiali o dniu, który ich czeka. Resztę zrobiło światło.\n\nPlanujecie plener? Napiszcie w wiadomości datę ślubu, a podpowiem, o której wyjść, żeby trafić na takie światło.' },
+      { name: 'Krótko', text: 'Złota godzina pod Krakowem. Bez pozowania i bez pośpiechu.\n\nWolne terminy na 2027: napisz w wiadomości prywatnej datę i miejsce ślubu.' },
+      { name: 'Dla par', text: 'Jak trafić na takie światło podczas sesji?\n\n1. Sprawdźcie godzinę zachodu słońca w dniu pleneru.\n2. Zacznijcie 60–90 minut wcześniej.\n3. Zostańcie jeszcze kwadrans po zachodzie, bo wtedy niebo bywa najładniejsze.\n\nZapiszcie ten post na później. Szukacie fotografa na 2027? Napiszcie datę i miejsce w wiadomości.' },
+    ],
+    hashtags: ['#fotografslubnykrakow', '#sesjaplenerowa', '#zlotagodzina', '#slub2027', '#inspiracjeslubne'],
+    location: 'Kraków',
+    tag: ['konto pary (za jej zgodą)', 'konto wizażu i fryzury'],
+    collab: 'Zaproponuj parze post we współpracy. Zobaczą go też ich znajomi, często pary przed ślubem.',
+  },
+  facebook: { text: 'Złota godzina pod Krakowem: dwadzieścia minut światła, które robi całą sesję.\n\nPlener najlepiej zacząć 60–90 minut przed zachodem słońca. Światło jest wtedy miękkie i ciepłe, a zdjęcia wychodzą naturalnie, bez sztywnego pozowania.\n\nWięcej sesji plenerowych: www.kwfoto.pl\nWolne terminy na 2027: napiszcie datę i miejsce ślubu.' },
+  pinterest: {
+    title: 'Sesja plenerowa o zachodzie słońca pod Krakowem – inspiracje ślubne',
+    description: 'Sesja plenerowa w złotej godzinie: para młoda na łące pod światło zachodzącego słońca. Inspiracja na plener ślubny w okolicach Krakowa i podpowiedź, jak zaplanować sesję, żeby trafić na najpiękniejsze światło. Fotograf ślubny Kraków – KWFoto.pl.',
+    board: 'Sesje plenerowe o zachodzie słońca',
+  },
+  google: {
+    text: 'Sesje plenerowe w złotej godzinie w Krakowie i okolicach. Plener planuję pod godzinę zachodu słońca, żeby światło było miękkie i ciepłe, a zdjęcia naturalne, bez sztywnego pozowania. Wolne terminy na 2027: napisz lub zadzwoń i podaj datę oraz miejsce ślubu.',
+    button: 'Więcej informacji',
+  },
+  seo: {
+    h1: 'Sesja plenerowa o zachodzie słońca pod Krakowem',
+    metaTitle: 'Sesja plenerowa o zachodzie słońca | Fotograf ślubny Kraków',
+    metaDescription: 'Sesja plenerowa w złotej godzinie pod Krakowem: naturalne zdjęcia pary w ciepłym świetle. Zobacz reportaż i sprawdź wolne terminy na 2027.',
+    slug: 'sesja-plenerowa-zachod-slonca-krakow',
+    keywords: ['sesja plenerowa Kraków', 'fotograf ślubny Kraków', 'sesja w złotej godzinie', 'plener ślubny o zachodzie słońca', 'zdjęcia ślubne Kraków'],
+    intro: 'Złota godzina to najkrótsza i najpiękniejsza część dnia na plener. Ta sesja powstała pod Krakowem, na łące tuż przed zachodem słońca. Zamiast pozowania był spacer i rozmowa, a światło zrobiło resztę. Jeśli planujecie sesję plenerową, zacznijcie 60–90 minut przed zachodem i zostawcie sobie kilkanaście minut po nim, bo wtedy niebo często ma najpiękniejsze kolory.',
+  },
+  stories: [
+    { text: 'Złota godzina czy zachód po weselu?', sticker: 'Ankieta: „Złota godzina” / „Po weselu”' },
+    { text: 'Nowa sesja w portfolio. Całość w poście 👇', sticker: 'Udostępniony post i naklejka z linkiem do strony' },
+  ],
+  reel: 'Nagraj 10 sekund POV telefonem na stopce aparatu: idziesz za parą przez łąkę, a na końcu pojawia się to zdjęcie.',
+  checklist: ['Oznacz parę (za jej zgodą) i dodaj lokalizację', 'Wklej tekst alternatywny w ustawieniach zaawansowanych', 'Zaproś parę do współpracy (Collab)', 'Po publikacji udostępnij post w stories z ankietą'],
+};
+
+/* ---------- Normalizacja odpowiedzi ---------- */
+function brandHashtags() {
+  return str(S.settings.hashtags).split(/[\s,]+/).map(h => h.replace(/^#+/, '')).filter(Boolean).map(h => '#' + h);
+}
+function cleanTags(list) {
+  const seen = new Set(); const out = [];
+  for (const raw of [...brandHashtags(), ...arr(list)]) {
+    const t = '#' + str(raw).replace(/^#+/, '').replace(/[\s#]+/g, '');
+    if (t.length < 2 || seen.has(t.toLowerCase())) continue;
+    seen.add(t.toLowerCase()); out.push(t);
+  }
+  return out.slice(0, 5);
+}
+const CROP_IDS = FORMATS.map(f => f.id);
+function normTexts(r, prev = {}) {
+  const ig = r.instagram || {}; const pig = prev.instagram || {};
+  const variants = arr(ig.variants).map((v, i) => ({ name: str(v?.name) || `Wariant ${i + 1}`, text: str(v?.text) })).filter(v => v.text).slice(0, 4);
+  const pin = r.pinterest || {}; const g = r.google || {}; const seo = r.seo || {};
+  const stories = arr(r.stories).map(s => ({ text: str(s?.text), sticker: str(s?.sticker) })).filter(s => s.text).slice(0, 4);
+  return {
+    instagram: {
+      variants: variants.length ? variants : clone(pig.variants || [{ name: 'Opis', text: '' }]),
+      hashtags: ig.hashtags ? cleanTags(ig.hashtags) : clone(pig.hashtags || []),
+      location: str(ig.location) || pig.location || '',
+      tag: arr(ig.tag).map(str).filter(Boolean).slice(0, 6).length ? arr(ig.tag).map(str).filter(Boolean).slice(0, 6) : clone(pig.tag || []),
+      collab: str(ig.collab) || pig.collab || '',
+    },
+    facebook: { text: str(r.facebook?.text) || prev.facebook?.text || '' },
+    pinterest: { title: str(pin.title) || prev.pinterest?.title || '', description: str(pin.description) || prev.pinterest?.description || '', board: str(pin.board) || prev.pinterest?.board || '' },
+    google: { text: str(g.text) || prev.google?.text || '', button: str(g.button) || prev.google?.button || '' },
+    seo: {
+      h1: str(seo.h1) || prev.seo?.h1 || '', metaTitle: str(seo.metaTitle) || prev.seo?.metaTitle || '',
+      metaDescription: str(seo.metaDescription) || prev.seo?.metaDescription || '',
+      slug: slugify(seo.slug) || prev.seo?.slug || '',
+      keywords: arr(seo.keywords).map(str).filter(Boolean).slice(0, 10).length ? arr(seo.keywords).map(str).filter(Boolean).slice(0, 10) : clone(prev.seo?.keywords || []),
+      intro: str(seo.intro) || prev.seo?.intro || '',
+    },
+    stories: stories.length ? stories : clone(prev.stories || []),
+    reel: str(r.reel) || prev.reel || '',
+  };
+}
+function normalize(r, n) {
+  r = r && typeof r === 'object' ? r : {};
+  const a = r.analysis || {};
+  const byN = new Map(arr(r.photos).map((p, i) => [Number(p?.n) || i + 1, p]));
+  const photos = Array.from({ length: n }, (_, i) => {
+    const p = byN.get(i + 1) || {}; const b = p.box || {};
+    let box = { x0: num01(b.x0, 0.2), y0: num01(b.y0, 0.1), x1: num01(b.x1, 0.8), y1: num01(b.y1, 0.95) };
+    if (box.x1 - box.x0 < 0.05 || box.y1 - box.y0 < 0.05) box = { x0: 0.2, y0: 0.1, x1: 0.8, y1: 0.95 };
+    return { point: { x: num01(p.point?.x, 0.5), y: num01(p.point?.y, 0.42) }, box, alt: str(p.alt), file: slugify(p.file) };
+  });
+  const crops = { note: str(r.crops?.note) };
+  for (const id of CROP_IDS) { const v = str(r.crops?.[id]).toLowerCase(); if (v === 'kadr' || v === 'ramka') crops[id] = v; }
+  const order = arr(a.order).map(Number).filter(k => Number.isInteger(k) && k >= 1 && k <= n);
+  return {
+    analysis: {
+      summary: str(a.summary), bestUse: str(a.bestUse),
+      cover: clamp(Number(a.cover) || 1, 1, Math.max(1, n)),
+      order: new Set(order).size === n ? order : [],
+      tips: arr(a.tips).map(str).filter(Boolean).slice(0, 4),
+    },
+    photos, crops, ...normTexts(r),
+    checklist: arr(r.checklist).map(str).filter(Boolean).slice(0, 7),
+  };
+}
+
+/* ---------- Polecenie dla Claude ---------- */
+const VOICE = {
+  'ja-m': 'pierwsza osoba liczby pojedynczej, rodzaj męski (np. „fotografowałem”, „byłem”)',
+  'ja-f': 'pierwsza osoba liczby pojedynczej, rodzaj żeński (np. „fotografowałam”, „byłam”)',
+  my: 'pierwsza osoba liczby mnogiej, jako zespół (np. „fotografowaliśmy”)',
+};
+const EMOJI = { none: 'bez emoji', few: 'najwyżej 1–2 emoji w tekście i tylko gdy pasują', some: 'emoji dozwolone, z umiarem' };
+function brandBlock() {
+  const s = S.settings; const tags = brandHashtags();
+  return [
+    `- Marka: ${s.brand || 'nie podano'}${s.person ? ` (autor: ${s.person})` : ''}`,
+    `- Miasto i obszar działania: ${[s.city, s.area].filter(Boolean).join('; ') || 'nie podano'}`,
+    `- Strona: ${s.website || 'nie podano'}; Instagram: ${s.instagram || 'nie podano'}`,
+    `- Usługi: ${s.services || 'fotografia ślubna'}`,
+    `- Forma wypowiedzi: ${VOICE[s.voice] || VOICE['ja-m']}`,
+    `- Ton: ${s.tone || 'ciepły i konkretny'}; emoji: ${EMOJI[s.emoji] || EMOJI.few}`,
+    `- Stałe wezwanie do działania: ${s.cta || 'brak'}`,
+    `- Frazy SEO marki: ${s.keywords || 'brak'}`,
+    `- Stałe hashtagi marki (wliczają się do limitu 5): ${tags.join(' ') || 'brak'}`,
+  ].join('\n');
+}
+function rulesBlock() {
+  return `ZASADY
+- Pisz po polsku, naturalnie, jak doświadczony fotograf. Unikaj sztampy: „magiczny dzień”, „wyjątkowe chwile”, „zatrzymać czas”, „bajkowy”.
+- Nie wymyślaj faktów: imion, nazw miejsc, dat, pogody ani historii, których nie ma w kontekście i nie widać na zdjęciu. Tekst ma być prawdziwy bez nich.
+- Instagram: 3 wyraźnie różne warianty (1. historia i emocje, 2. krótki i elegancki, 3. wartość dla par: porada lub kulisy). Pierwsze zdanie to haczyk do 125 znaków, bo tyle widać przed „więcej”. Każdy wariant do 1200 znaków, akapity oddzielone pustą linią, na końcu wezwanie do działania dopasowane do celu.
+- Hashtagi na Instagram: najwyżej 5 łącznie (limit Instagrama), w tym stałe hashtagi marki. Mieszanka lokalnych i tematycznych, bez ogólników w rodzaju #love.
+- Tekst alternatywny: rzeczowy opis tego, co widać, do 125 znaków, bez „zdjęcie przedstawia”.
+- Pinterest: tytuł do 100 znaków, opis do 500 znaków, najważniejsze frazy w pierwszych 50 znakach.
+- Profil Firmy w Google: 300–700 znaków, lokalnie (miasto, region), z wezwaniem do działania.
+- SEO strony: meta title do 60 znaków, meta description do 155 znaków; slug i nazwy plików małymi literami, bez polskich znaków, słowa łączone myślnikami.`;
+}
+function contextBlock() {
+  const c = S.ctx; const goal = GOALS.find(g => g.id === c.goal) || GOALS[0];
+  return `KONTEKST POSTA
+- Rodzaj materiału: ${c.type}
+- Cel: ${goal.prompt}
+- Miejsce: ${c.place || 'nie podano'}
+- Do oznaczenia: ${c.tags || 'nie podano'}
+- Notatki autora: ${c.notes || 'brak'}`;
+}
+function buildPrompt(n, seesImages) {
+  const photosLine = seesImages
+    ? `W załączniku ${n === 1 ? 'jest 1 zdjęcie' : `są zdjęcia do jednego posta (${n}), ponumerowane od 1 w kolejności załączenia`}.`
+    : `Nie widzisz zdjęć (${n}); opieraj się na kontekście, punkt kluczowy ustaw na środku kadru.`;
+  return `Jesteś ekspertem od social mediów i SEO. Od lat prowadzisz profile fotografów i filmowców ślubnych z segmentu premium w Polsce. Przygotuj komplet materiałów do publikacji. ${photosLine}
+
+MARKA
+${brandBlock()}
+
+${contextBlock()}
+
+${rulesBlock()}
+- Kadrowanie: dla każdego zdjęcia podaj punkt kluczowy (najważniejsze miejsce kadru, np. twarze pary) i prostokąt obejmujący główny motyw, we współrzędnych 0–1 (x od lewej, y od góry). Dla każdego formatu oceń, czy lepiej przyciąć („kadr”), czy wpasować całe zdjęcie z tłem („ramka”). Formaty: ig45 = 4:5, ig34 = 3:4, story = 9:16, pin = 2:3, sq = 1:1, wide = 16:9, gbp = 4:3.
+- Jeśli zdjęć jest kilka, wskaż najlepszą okładkę karuzeli i proponowaną kolejność.
+
+ODPOWIEDŹ
+Zwróć wyłącznie JSON w tym kształcie:
+{"analysis":{"summary":"1–2 zdania: co jest na zdjęciach i co w nich najmocniejsze","bestUse":"gdzie to zadziała najlepiej i dlaczego, 1 zdanie","cover":1,"order":[1],"tips":["do 3 krótkich wskazówek publikacji"]},
+"photos":[{"n":1,"point":{"x":0.5,"y":0.4},"box":{"x0":0.2,"y0":0.1,"x1":0.8,"y1":0.95},"alt":"…","file":"nazwa-pliku-bez-rozszerzenia"}],
+"crops":{"ig45":"kadr","ig34":"kadr","story":"ramka","pin":"kadr","sq":"kadr","wide":"kadr","gbp":"kadr","note":"1 zdanie o kadrowaniu"},
+"instagram":{"variants":[{"name":"Historia","text":"…"},{"name":"Krótko","text":"…"},{"name":"Dla par","text":"…"}],"hashtags":["#…"],"location":"sugerowana lokalizacja","tag":["kogo oznaczyć"],"collab":"komu zaproponować post we współpracy i dlaczego"},
+"facebook":{"text":"…"},
+"pinterest":{"title":"…","description":"…","board":"nazwa tablicy"},
+"google":{"text":"…","button":"np. Więcej informacji"},
+"seo":{"h1":"…","metaTitle":"…","metaDescription":"…","slug":"…","keywords":["5–8 fraz"],"intro":"wstęp do wpisu na blogu, 80–120 słów"},
+"stories":[{"text":"tekst na planszę","sticker":"naklejka, np. ankieta z odpowiedziami"}],
+"reel":"pomysł na rolkę z tym materiałem, 1–2 zdania",
+"checklist":["3–6 punktów do odhaczenia przed publikacją"]}
+Tablica "photos" ma mieć dokładnie ${n} ${n === 1 ? 'element' : 'elementów'}.`;
+}
+function pickTexts(r) {
+  const { instagram, facebook, pinterest, google, seo, stories, reel } = r;
+  return { instagram, facebook, pinterest, google, seo, stories, reel };
+}
+function buildRefinePrompt(instruction) {
+  return `Jesteś ekspertem od social mediów i SEO dla fotografów ślubnych premium w Polsce. Poniżej są gotowe teksty posta (JSON). Popraw je zgodnie z poleceniem autora: „${instruction}”.
+
+MARKA
+${brandBlock()}
+
+${contextBlock()}
+
+${rulesBlock()}
+
+Zmieniaj tylko to, czego dotyczy polecenie; resztę zostaw. Zwróć wyłącznie JSON z tymi samymi kluczami: instagram, facebook, pinterest, google, seo, stories, reel.
+
+${JSON.stringify(pickTexts(S.result))}`;
+}
+
+/* ---------- Wywołania ---------- */
+function sampleErrorText(e) {
+  switch (e?.code) {
+    case 'not_granted': return 'Brak zgody na użycie Claude. Odśwież stronę i zezwól, gdy pojawi się pytanie.';
+    case 'sampling_disabled': case 'not_declared': case 'capability_disabled': case 'capability_removed':
+      return 'Generowanie tekstów nie jest dostępne w tym widoku.';
+    case 'images_unavailable': return 'Ten widok nie może wysłać zdjęcia do Claude. Otwórz narzędzie na claude.ai w przeglądarce.';
+    case 'rate_limited': return 'Za dużo zapytań naraz albo wyczerpany limit użycia Claude. Spróbuj za kilka minut.';
+    case 'session_expired': return 'Sesja wygasła. Zaloguj się ponownie do Claude i odśwież stronę.';
+    case 'image_rejected': return 'Zdjęcie nie zostało przyjęte. Zapisz je jako JPG i spróbuj ponownie.';
+    case 'refused': return 'Claude nie przygotował tekstów dla tego materiału. Zmień kontekst albo zdjęcie i spróbuj ponownie.';
+    case 'invalid_json': case 'empty_completion': return 'Odpowiedź przyszła w złym formacie. Kliknij jeszcze raz.';
+    case 'prompt_too_large': return 'Za dużo tekstu w kontekście. Skróć notatkę i spróbuj ponownie.';
+    default: return 'Połączenie zostało przerwane. Spróbuj ponownie.';
+  }
+}
+function setBusy(on) {
+  S.busy = on;
+  $('#genBtn').disabled = on; $('#refineBtn').disabled = on;
+  $$('#refineChips .chip').forEach(b => { b.disabled = on; });
+  $('#results').classList.toggle('busy', on);
+}
+async function runSample(prompt, opts, label) {
+  const sample = await samplePromise;
+  if (!sample) { setStatus('Teksty generuje Claude, więc otwórz to narzędzie w Claude (claude.ai lub aplikacja). Kadrowanie działa także tutaj.', 'err'); return null; }
+  S.ctl = new AbortController(); setBusy(true);
+  const t0 = Date.now(); let chars = 0;
+  const tick = () => {
+    const s = Math.round((Date.now() - t0) / 1000);
+    setStatus(chars ? `Piszę teksty… ${chars} znaków · ${s} s` : `${label}… ${s} s`, 'busy');
+  };
+  tick(); const timer = setInterval(tick, 1000);
+  try {
+    return await sample.json(prompt, { ...opts, signal: S.ctl.signal, cache: false, onText: ({ text }) => { chars = text.length; } });
+  } catch (e) {
+    if (e?.code === 'cancelled') setStatus('Zatrzymano.');
+    else { console.warn('sample', e); setStatus(sampleErrorText(e), 'err'); }
+    return null;
+  } finally { clearInterval(timer); setBusy(false); S.ctl = null; }
+}
+
+async function generate() {
+  if (S.busy) return;
+  readContext();
+  if (!S.photos.length) { setStatus('Najpierw wgraj co najmniej jedno zdjęcie.', 'err'); return; }
+  const sample = await samplePromise;
+  let maxImg = 0;
+  if (sample) { try { const lim = await sample.limits(); maxImg = lim?.images ? Math.max(1, lim.images.maxCount || 1) : 0; } catch { maxImg = 0; } }
+  const photos = maxImg ? S.photos.slice(0, maxImg) : S.photos;
+  let images;
+  try { images = maxImg ? await Promise.all(photos.map(p => toBlob(p.preview, 'image/jpeg', 0.85))) : undefined; }
+  catch { setStatus('Nie mogę przygotować zdjęcia do wysłania. Spróbuj innego pliku.', 'err'); return; }
+  const n = S.photos.length;
+  const raw = await runSample(buildPrompt(maxImg ? photos.length : n, !!maxImg), images ? { images } : {}, 'Oglądam zdjęcie i piszę');
+  if (!raw) return;
+  const r = normalize(raw, n);
+  S.result = r; S.isExample = false; S.history = []; S.savedPostId = null; S.igVariant = 0;
+  applyAiToPhotos();
+  renderStrip(); renderResults(); renderFormats();
+  const partial = maxImg && n > maxImg ? ` Claude obejrzał ${maxImg} pierwszych zdjęć (limit tego widoku).` : '';
+  setStatus('Gotowe. Wybierz wariant, skopiuj tekst i pobierz kadry.' + partial, 'ok');
+}
+
+async function refine(instruction) {
+  instruction = str(instruction);
+  if (!instruction || S.busy) return;
+  if (S.isExample || !S.result) { toast('Najpierw przygotuj post ze swoim zdjęciem.'); return; }
+  const raw = await runSample(buildRefinePrompt(instruction), {}, 'Poprawiam teksty');
+  if (!raw) return;
+  S.history.push(clone(S.result));
+  Object.assign(S.result, normTexts(raw, S.result));
+  S.igVariant = Math.min(S.igVariant, S.result.instagram.variants.length - 1);
+  renderResults();
+  $('#refineInput').value = '';
+  setStatus('Poprawione. Poprzednią wersję przywrócisz przyciskiem „Cofnij poprawkę”.', 'ok');
+}
+
+/* ---------- Teksty ---------- */
+const PTABS = [
+  { id: 'instagram', label: 'Instagram' }, { id: 'facebook', label: 'Facebook' }, { id: 'pinterest', label: 'Pinterest' },
+  { id: 'google', label: 'Google' }, { id: 'seo', label: 'Strona i SEO' }, { id: 'stories', label: 'Stories i rolka' },
+];
+const REFINE_CHIPS = [
+  ['Krócej', 'Skróć wszystkie teksty o około jedną trzecią, zachowując najważniejsze informacje.'],
+  ['Bardziej emocjonalnie', 'Napisz teksty cieplej i bardziej emocjonalnie, ale bez patosu i sztampy.'],
+  ['Bardziej elegancko', 'Nadaj tekstom bardziej elegancki charakter premium: mniej słów, więcej klasy.'],
+  ['Mocniejsze wezwanie', 'Wzmocnij wezwania do działania, żeby zachęcały do napisania wiadomości z datą i miejscem ślubu.'],
+  ['Pytanie do odbiorców', 'Dodaj na końcu opisów na Instagram i Facebook pytanie, które zachęci do komentarzy.'],
+  ['Wersja angielska', 'Przetłumacz wszystkie teksty na naturalny angielski dla par z zagranicy. Hashtagi zostaw w limicie 5.'],
+];
+
+function renderResults() {
+  if (!S.result) return;
+  $('#exampleBadge').hidden = !S.isExample;
+  const save = $('#saveBtn'); save.hidden = S.isExample;
+  save.textContent = S.savedPostId ? 'Zapisz zmiany' : 'Zapisz w planie';
+  $('#undoBtn').hidden = !S.history.length;
+  renderAnalysis(); renderPTabs(); renderPBody();
+}
+function renderAnalysis() {
+  const r = S.result, a = r.analysis, box = $('#analysis'); box.replaceChildren();
+  if (S.isExample) box.append(el('p', { class: 'ex', text: 'Tak wygląda wynik dla przykładowej sesji plenerowej. Wgraj swoje zdjęcie i kliknij „Przygotuj post”.' }));
+  if (a.summary) box.append(el('p', {}, el('strong', { text: 'Co widzę: ' }), a.summary));
+  if (a.bestUse) box.append(el('p', {}, el('strong', { text: 'Gdzie to wykorzystać: ' }), a.bestUse));
+  if (r.crops?.note) box.append(el('p', {}, el('strong', { text: 'Kadrowanie: ' }), r.crops.note));
+  if (a.tips?.length) box.append(el('ul', {}, a.tips.map(t => el('li', { text: t }))));
+  const n = S.photos.length;
+  if (!S.isExample && n > 1 && a.order?.length === n && a.order.some((k, i) => k !== i + 1)) {
+    box.append(el('p', {}, `Proponowana kolejność w karuzeli: ${a.order.join(', ')}. `,
+      el('button', { type: 'button', class: 'btn sm', onclick: applyOrder }, 'Ustaw tę kolejność')));
+  }
+  if (r.checklist?.length) {
+    box.append(el('details', {}, el('summary', { text: `Przed publikacją (${r.checklist.length})` }),
+      el('ul', { class: 'checks' }, r.checklist.map(t => el('li', {}, el('label', {}, el('input', { type: 'checkbox' }), el('span', { text: t })))))));
+  }
+}
+function renderPTabs() {
+  const bar = $('#ptabs'); bar.replaceChildren();
+  for (const t of PTABS) {
+    bar.append(el('button', { type: 'button', role: 'tab', id: 'pt-' + t.id, 'aria-selected': String(S.pTab === t.id),
+      onclick: () => { S.pTab = t.id; renderPTabs(); renderPBody(); } }, t.label));
+  }
+  $('#pbody').setAttribute('aria-labelledby', 'pt-' + S.pTab);
+}
+function renderPBody() {
+  const body = $('#pbody'); body.replaceChildren();
+  const make = { instagram: bodyInstagram, facebook: bodyFacebook, pinterest: bodyPinterest, google: bodyGoogle, seo: bodySeo, stories: bodyStories }[S.pTab] || bodyInstagram;
+  body.append(...make(S.result).filter(Boolean));
+  requestAnimationFrame(() => $$('textarea.copytext', body).forEach(autosize));
+}
+
+/* ---------- Pola z licznikami ---------- */
+let fieldSeq = 0;
+function autosize(ta) { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight + 2, 720) + 'px'; }
+function copyBtn(getText) {
+  const b = el('button', { type: 'button', class: 'btn sm', onclick: () => copyText(typeof getText === 'function' ? getText() : getText, b) }, 'Kopiuj');
+  return b;
+}
+function fieldBlock({ label, get, set, limit, warnAt, rows = 3, short = false, copy, onInput, extra }) {
+  const id = 'fld' + (++fieldSeq);
+  const ta = el('textarea', { class: 'copytext' + (short ? ' short' : ''), id, rows: String(rows) });
+  ta.value = get() || '';
+  const counter = el('span', { class: 'counter' });
+  const upd = () => {
+    const n = len(ta.value);
+    counter.textContent = limit ? `${n} / ${limit}` : `${n} zn.`;
+    const over = limit && n > limit;
+    counter.className = 'counter' + (over ? ' over' : limit && n > (warnAt || limit * 0.9) ? ' warn' : '');
+    counter.title = over ? 'Za długie dla tej platformy' : '';
+  };
+  ta.addEventListener('input', () => { set(ta.value); upd(); autosize(ta); onInput?.(ta.value); });
+  upd();
+  const btn = copyBtn(() => (copy ? copy(ta.value) : ta.value));
+  return el('div', { class: 'fblock' }, el('div', { class: 'fblock-h' }, el('label', { for: id, text: label }), counter, btn), ta, extra);
+}
+function infoList(pairs) {
+  const rows = pairs.filter(([, v]) => str(v));
+  if (!rows.length) return null;
+  return el('dl', { class: 'info' }, rows.map(([k, v]) => [el('dt', { text: k }), el('dd', { text: v })]));
+}
+const cleanTagOne = s => { const t = str(s).replace(/^#+/, '').replace(/[\s#,]+/g, ''); return t ? '#' + t : ''; };
+function hashtagBlock(ig) {
+  const wrap = el('div', { class: 'fblock' });
+  const draw = focus => {
+    wrap.replaceChildren();
+    const count = ig.hashtags.length;
+    const input = el('input', { type: 'text', placeholder: '#dodaj', 'aria-label': 'Dodaj hashtag', disabled: count >= 5 });
+    const add = () => {
+      const t = cleanTagOne(input.value); input.value = '';
+      if (t && ig.hashtags.length < 5 && !ig.hashtags.some(h => h.toLowerCase() === t.toLowerCase())) ig.hashtags.push(t);
+      draw(true);
+    };
+    input.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ',' || e.key === ' ') { e.preventDefault(); add(); } });
+    input.addEventListener('blur', () => { if (input.value.trim()) add(); });
+    wrap.append(
+      el('div', { class: 'fblock-h' }, el('span', { class: 'lbl', text: 'Hashtagi' }),
+        el('span', { class: 'counter' + (count > 5 ? ' over' : ''), text: `${count} / 5` }), copyBtn(() => ig.hashtags.join(' '))),
+      el('div', { class: 'tags' }, ig.hashtags.map((h, k) => el('span', { class: 'tagchip' }, h,
+        el('button', { type: 'button', 'aria-label': `Usuń ${h}`, onclick: () => { ig.hashtags.splice(k, 1); draw(); } }, '×'))), input),
+      el('p', { class: 'note', style: 'margin-top:6px', text: 'Instagram pozwala na najwyżej 5 hashtagów w poście.' }));
+    if (focus && count < 5) input.focus();
+  };
+  draw(); return wrap;
+}
+function altBlock(r) {
+  return el('div', { class: 'alts' }, r.photos.map((p, i) => el('div', { class: 'altrow' },
+    !S.isExample && S.photos[i] ? el('img', { src: S.photos[i].thumb, alt: '' }) : el('span', { class: 'ph' }),
+    fieldBlock({ label: r.photos.length > 1 ? `Tekst alternatywny · zdjęcie ${i + 1}` : 'Tekst alternatywny',
+      get: () => p.alt, set: t => { p.alt = t; }, limit: 125, warnAt: 110, rows: 2, short: true }))));
+}
+
+/* ---------- Zakładki platform ---------- */
+function igFull() {
+  const ig = S.result.instagram; const v = ig.variants[clamp(S.igVariant, 0, ig.variants.length - 1)];
+  return v.text.trim() + (ig.hashtags.length ? '\n\n' + ig.hashtags.join(' ') : '');
+}
+function bodyInstagram(r) {
+  const ig = r.instagram; const i = clamp(S.igVariant, 0, ig.variants.length - 1); const v = ig.variants[i];
+  const out = [];
+  if (ig.variants.length > 1) {
+    out.push(el('div', { class: 'variants', role: 'group', 'aria-label': 'Warianty opisu' },
+      ig.variants.map((x, k) => el('button', { type: 'button', class: 'chip', 'aria-pressed': String(k === i),
+        onclick: () => { S.igVariant = k; renderPBody(); } }, `${k + 1}. ${x.name}`))));
+  }
+  const hook = el('p', { class: 'note', style: 'margin-top:6px' });
+  const setHook = t => {
+    const n = len((t.split('\n').find(l => l.trim()) || '').trim());
+    hook.textContent = n <= 125 ? `Pierwsza linia: ${n} znaków, zmieści się przed „więcej”.` : `Pierwsza linia ma ${n} znaków. Przed „więcej” widać około 125.`;
+    hook.style.color = n <= 125 ? '' : 'var(--warn)';
+  };
+  setHook(v.text);
+  out.push(fieldBlock({ label: 'Opis posta', get: () => v.text, set: t => { v.text = t; }, limit: 2200, warnAt: 1600, rows: 8, onInput: setHook, extra: hook }));
+  out.push(hashtagBlock(ig));
+  const all = el('button', { type: 'button', class: 'btn primary', onclick: () => copyText(igFull(), all) }, 'Kopiuj opis z hashtagami');
+  out.push(el('div', { class: 'actions' }, all));
+  out.push(altBlock(r));
+  out.push(infoList([['Lokalizacja', ig.location], ['Oznacz', ig.tag.join(', ')], ['Współpraca', ig.collab]]));
+  return out;
+}
+function bodyFacebook(r) {
+  return [fieldBlock({ label: 'Post na Facebooku', get: () => r.facebook.text, set: t => { r.facebook.text = t; }, rows: 7 }),
+    el('p', { class: 'note', text: 'Na Facebooku link do strony w treści działa, a hashtagi są zbędne.' })];
+}
+function bodyPinterest(r) {
+  const p = r.pinterest; const site = str(S.settings.website);
+  return [
+    fieldBlock({ label: 'Tytuł pinu', get: () => p.title, set: t => { p.title = t; }, limit: 100, warnAt: 90, rows: 2, short: true }),
+    fieldBlock({ label: 'Opis pinu', get: () => p.description, set: t => { p.description = t; }, limit: 500, warnAt: 450, rows: 5 }),
+    infoList([['Tablica', p.board], ['Link', site ? (/^https?:\/\//.test(site) ? site : 'https://' + site) : ''], ['Grafika', '2:3 · 1000×1500 z sekcji Kadry']]),
+    el('p', { class: 'note', text: 'W wynikach widać pierwsze 50–60 znaków opisu, dlatego najważniejsze frazy są na początku.' }),
+  ];
+}
+function bodyGoogle(r) {
+  const g = r.google;
+  return [fieldBlock({ label: 'Post w Profilu Firmy w Google', get: () => g.text, set: t => { g.text = t; }, limit: 1500, warnAt: 1200, rows: 6 }),
+    infoList([['Przycisk', g.button], ['Grafika', '4:3 · 1200×900 z sekcji Kadry']]),
+    el('p', { class: 'note', text: 'Posty w Google pomagają w lokalnych wynikach wyszukiwania, np. „fotograf ślubny Kraków”.' })];
+}
+function bodySeo(r) {
+  const s = r.seo; const site = str(S.settings.website).replace(/^https?:\/\//, '').replace(/\/+$/, '');
+  const files = () => r.photos.map((p, i) => (S.isExample ? p.file : p.file || fileBase(i)) + '.jpg');
+  const urlNote = el('p', { class: 'note mono', style: 'margin-top:6px', text: site ? `${site}/${slugify(s.slug) || '…'}` : '' });
+  return [
+    fieldBlock({ label: 'Tytuł wpisu (H1)', get: () => s.h1, set: t => { s.h1 = t; }, rows: 2, short: true }),
+    fieldBlock({ label: 'Meta title', get: () => s.metaTitle, set: t => { s.metaTitle = t; }, limit: 60, warnAt: 55, rows: 2, short: true }),
+    fieldBlock({ label: 'Meta description', get: () => s.metaDescription, set: t => { s.metaDescription = t; }, limit: 155, warnAt: 145, rows: 3, short: true }),
+    fieldBlock({ label: 'Adres wpisu (slug)', get: () => s.slug, set: t => { s.slug = t; }, rows: 1, short: true,
+      copy: t => slugify(t), onInput: t => { if (site) urlNote.textContent = `${site}/${slugify(t) || '…'}`; }, extra: site ? urlNote : null }),
+    el('div', { class: 'fblock' }, el('div', { class: 'fblock-h' }, el('span', { class: 'lbl', text: 'Nazwy plików zdjęć' }), copyBtn(() => files().join('\n'))),
+      el('p', { class: 'note mono', style: 'white-space:pre-line', text: files().join('\n') })),
+    el('div', { class: 'fblock' }, el('div', { class: 'fblock-h' }, el('span', { class: 'lbl', text: 'Frazy kluczowe' }), copyBtn(() => s.keywords.join(', '))),
+      el('div', { class: 'tags' }, s.keywords.map(k => el('span', { class: 'tagchip kw', text: k })))),
+    fieldBlock({ label: 'Wstęp do wpisu na blogu', get: () => s.intro, set: t => { s.intro = t; }, rows: 6 }),
+    el('p', { class: 'note', text: 'Teksty alternatywne są w zakładce Instagram. Na stronie użyj tych samych.' }),
+  ];
+}
+function bodyStories(r) {
+  const out = r.stories.map((s, i) => el('div', { class: 'story' },
+    fieldBlock({ label: `Plansza ${i + 1}`, get: () => s.text, set: t => { s.text = t; }, rows: 2, short: true }),
+    infoList([['Naklejka', s.sticker]])));
+  out.push(el('div', { class: 'story' }, fieldBlock({ label: 'Pomysł na rolkę', get: () => r.reel, set: t => { r.reel = t; }, rows: 3, short: true })));
+  out.push(el('p', { class: 'note', text: 'Tło do stories pobierzesz w formacie 9:16 w sekcji Kadry.' }));
+  return out;
+}
+
+/* ---------- Eksport tekstów ---------- */
+function textsExport() {
+  const r = S.result; const ig = r.instagram; const L = [];
+  const sec = t => L.push('', `=== ${t} ===`);
+  sec('INSTAGRAM');
+  ig.variants.forEach((v, i) => L.push('', `--- Wariant ${i + 1}: ${v.name} ---`, v.text));
+  L.push('', 'Hashtagi: ' + ig.hashtags.join(' '));
+  r.photos.forEach((p, i) => L.push(`Tekst alternatywny ${i + 1}: ${p.alt}`));
+  if (ig.location) L.push('Lokalizacja: ' + ig.location);
+  if (ig.tag.length) L.push('Oznacz: ' + ig.tag.join(', '));
+  if (ig.collab) L.push('Współpraca: ' + ig.collab);
+  sec('FACEBOOK'); L.push(r.facebook.text);
+  sec('PINTEREST'); L.push('Tytuł: ' + r.pinterest.title, 'Opis: ' + r.pinterest.description, 'Tablica: ' + r.pinterest.board);
+  sec('GOOGLE'); L.push(r.google.text, 'Przycisk: ' + r.google.button);
+  sec('STRONA I SEO');
+  L.push('H1: ' + r.seo.h1, 'Meta title: ' + r.seo.metaTitle, 'Meta description: ' + r.seo.metaDescription,
+    'Slug: ' + slugify(r.seo.slug), 'Frazy: ' + r.seo.keywords.join(', '), '', r.seo.intro);
+  sec('STORIES'); r.stories.forEach((s, i) => L.push(`${i + 1}. ${s.text}${s.sticker ? ` [${s.sticker}]` : ''}`));
+  if (r.reel) L.push('', 'Rolka: ' + r.reel);
+  return L.join('\n').trim() + '\n';
+}
+
+/* ---------- Kontekst posta ---------- */
+function buildContextForm() {
+  $('#ctxType').replaceChildren(...TYPES.map(t => el('option', { value: t, text: t })));
+  $('#ctxType').value = S.ctx.type;
+  renderGoalChips();
+}
+function renderGoalChips() {
+  $('#ctxGoal').replaceChildren(...GOALS.map(g => el('button', { type: 'button', class: 'chip', 'aria-pressed': String(S.ctx.goal === g.id),
+    onclick: () => { S.ctx.goal = g.id; renderGoalChips(); } }, g.label)));
+}
+function readContext() {
+  S.ctx.type = $('#ctxType').value || TYPES[0];
+  S.ctx.place = str($('#ctxPlace').value);
+  S.ctx.tags = str($('#ctxTags').value);
+  S.ctx.notes = str($('#ctxNotes').value).slice(0, 3000);
+}
+function writeContext(c) {
+  S.ctx = { ...S.ctx, ...c };
+  $('#ctxType').value = TYPES.includes(S.ctx.type) ? S.ctx.type : TYPES[0];
+  $('#ctxPlace').value = S.ctx.place || ''; $('#ctxTags').value = S.ctx.tags || ''; $('#ctxNotes').value = S.ctx.notes || '';
+  renderGoalChips();
+}
+
+/* ---------- Ustawienia marki ---------- */
+const SET_FIELDS = ['brand', 'person', 'city', 'area', 'website', 'instagram', 'services', 'voice', 'emoji', 'tone', 'cta', 'keywords', 'hashtags'];
+let formDays = [];
+function fillSettingsForm() {
+  for (const k of SET_FIELDS) { const f = $('#s-' + k); if (f) f.value = S.settings[k] ?? ''; }
+  $('#s-goal').value = String(S.settings.weeklyGoal || 2);
+  formDays = arr(S.settings.days).map(Number);
+  renderDayChips();
+}
+function renderDayChips() {
+  $('#s-days').replaceChildren(...DAY_LABELS.map(([d, l]) => el('button', { type: 'button', class: 'chip', 'aria-pressed': String(formDays.includes(d)),
+    onclick: () => { formDays = formDays.includes(d) ? formDays.filter(x => x !== d) : [...formDays, d]; renderDayChips(); } }, l)));
+}
+async function saveSettings(e) {
+  e.preventDefault();
+  const s = { ...S.settings };
+  for (const k of SET_FIELDS) { const f = $('#s-' + k); if (f) s[k] = str(f.value); }
+  s.weeklyGoal = clamp(parseInt($('#s-goal').value, 10) || 2, 1, 14);
+  s.days = formDays.length ? [...formDays] : [2, 5];
+  S.settings = s; renderPlan();
+  const btn = $('#setSave'); btn.disabled = true;
+  try { await Store.saveSettings(s); toast('Zapisano ustawienia marki.'); }
+  catch (err) { console.warn(err); toast('Nie udało się zapisać na stałe. Zmiany działają do odświeżenia strony.'); }
+  finally { btn.disabled = false; }
+}
+
+/* ---------- Plan publikacji ---------- */
+function plural(n, one, few, many) {
+  if (n === 1) return one;
+  const d = n % 10, t = n % 100;
+  return d >= 2 && d <= 4 && (t < 12 || t > 14) ? few : many;
+}
+function nextSlot() {
+  const days = arr(S.settings.days).length ? S.settings.days.map(Number) : [2, 5];
+  const taken = new Set(S.posts.filter(p => p.status !== 'done').map(p => p.plannedFor));
+  const d = new Date(); d.setHours(12, 0, 0, 0);
+  for (let i = 0; i < 366; i++) {
+    if (days.includes(d.getDay()) && !taken.has(toISO(d))) return toISO(d);
+    d.setDate(d.getDate() + 1);
+  }
+  return toISO(new Date());
+}
+function postTitle() {
+  return str(S.result?.seo?.h1) || [S.ctx.type, S.ctx.place].filter(Boolean).join(' · ') || 'Post';
+}
+async function saveToPlan() {
+  if (S.isExample || !S.result) return;
+  const btn = $('#saveBtn'); btn.disabled = true;
+  try {
+    if (S.savedPostId) {
+      await Store.updatePost(S.savedPostId, { result: clone(S.result), variant: S.igVariant, updatedAt: Date.now() });
+      toast('Zapisano zmiany w planie.');
+    } else {
+      readContext();
+      const when = nextSlot();
+      const cover = S.photos[(S.result.analysis.cover || 1) - 1] || S.photos[0];
+      S.savedPostId = await Store.addPost({
+        title: postTitle(), ctx: { ...S.ctx }, createdAt: Date.now(), plannedFor: when, status: 'plan',
+        thumb: cover?.thumb || '', result: clone(S.result), variant: S.igVariant,
+      });
+      toast(`Zapisano w planie na ${fmtDay(when)}.`);
+    }
+    renderResults();
+  } catch (e) {
+    console.warn(e);
+    toast(e?.code === 'quota_exceeded' ? 'Plan jest pełny. Usuń stare posty i spróbuj ponownie.' : 'Nie udało się zapisać. Spróbuj ponownie.');
+  } finally { btn.disabled = false; }
+}
+function openPost(p) {
+  if (!p.result) { toast('Ten wpis nie ma zapisanych tekstów.'); return; }
+  S.photos.forEach(x => URL.revokeObjectURL(x.url)); S.photos = []; S.active = 0;
+  S.result = normalize(clone(p.result), arr(p.result.photos).length || 1);
+  S.isExample = false; S.savedPostId = p.id; S.history = [];
+  S.igVariant = clamp(Number(p.variant) || 0, 0, S.result.instagram.variants.length - 1);
+  if (p.ctx) writeContext(p.ctx);
+  switchView('new');
+  renderStrip(); renderResults(); renderFormats();
+  setStatus('Otworzono zapisany post. Żeby pobrać kadry, wgraj to samo zdjęcie jeszcze raz.', 'ok');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function planRow(p) {
+  const c = p.ctx || {}; const goal = GOALS.find(g => g.id === c.goal);
+  const date = el('input', { type: 'date', value: p.plannedFor || '', 'aria-label': 'Data publikacji' });
+  date.addEventListener('change', () => Store.updatePost(p.id, { plannedFor: date.value }).catch(() => toast('Nie udało się zmienić daty.')));
+  const cb = el('input', { type: 'checkbox', checked: p.status === 'done' });
+  cb.addEventListener('change', () => Store.updatePost(p.id, cb.checked ? { status: 'done', doneAt: Date.now() } : { status: 'plan', doneAt: null })
+    .catch(() => toast('Nie udało się zapisać zmiany.')));
+  const del = el('button', { type: 'button', class: 'btn ghost sm' }, 'Usuń');
+  let armed = false, timer = 0;
+  del.addEventListener('click', async () => {
+    if (!armed) {
+      armed = true; del.textContent = 'Na pewno usunąć?'; del.style.color = 'var(--accent)';
+      timer = setTimeout(() => { armed = false; del.textContent = 'Usuń'; del.style.color = ''; }, 3500);
+      return;
+    }
+    clearTimeout(timer); del.disabled = true;
+    try {
+      await Store.deletePost(p.id);
+      if (S.savedPostId === p.id) { S.savedPostId = null; renderResults(); }
+      toast('Usunięto z planu.');
+    } catch { del.disabled = false; toast('Nie udało się usunąć. Spróbuj ponownie.'); }
+  });
+  return el('div', { class: 'prow' + (p.status === 'done' ? ' done' : '') },
+    p.thumb ? el('img', { src: p.thumb, alt: '' }) : el('span', { class: 'ph' }),
+    el('div', {}, el('div', { class: 't', text: p.title || 'Post' }),
+      el('div', { class: 'm', text: [fmtDay(p.plannedFor), goal?.label, c.place].filter(Boolean).join(' · ') })),
+    el('div', { class: 'acts' }, date, el('label', { class: 'donecb' }, cb, 'Opublikowane'),
+      el('button', { type: 'button', class: 'btn sm', onclick: () => openPost(p) }, 'Otwórz teksty'), del));
+}
+function renderPlan() {
+  const posts = S.posts;
+  const todo = posts.filter(p => p.status !== 'done')
+    .sort((a, b) => str(a.plannedFor || '9999').localeCompare(str(b.plannedFor || '9999')) || (a.createdAt || 0) - (b.createdAt || 0));
+  const done = posts.filter(p => p.status === 'done').sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
+  $('#planCount').textContent = todo.length ? String(todo.length) : '';
+  const [ws, we] = weekBounds();
+  const weekDone = done.filter(p => p.doneAt >= ws.getTime() && p.doneAt < we.getTime()).length;
+  const goal = S.settings.weeklyGoal || 2;
+  const today = toISO(new Date());
+  const horizon = new Date(); horizon.setDate(horizon.getDate() + 28);
+  const planned = todo.filter(p => p.plannedFor && p.plannedFor >= today && p.plannedFor <= toISO(horizon)).length;
+  const overdue = todo.filter(p => p.plannedFor && p.plannedFor < today).length;
+  const missing = Math.max(0, goal - weekDone);
+  $('#planStats').replaceChildren(
+    el('div', { class: 'stat' }, el('div', { class: 'k', text: 'Ten tydzień' }), el('div', { class: 'v', text: `${weekDone} / ${goal}` }),
+      el('div', { class: 'meter', 'aria-hidden': 'true' }, Array.from({ length: Math.max(goal, weekDone) }, (_, i) => el('i', { class: i < weekDone ? 'on' : '' }))),
+      el('div', { class: 's', text: missing ? `Brakuje ${missing} ${plural(missing, 'posta', 'postów', 'postów')} do celu.` : 'Cel tygodnia zrobiony.' })),
+    el('div', { class: 'stat' }, el('div', { class: 'k', text: 'Zaplanowane na 4 tygodnie' }), el('div', { class: 'v', text: String(planned) }),
+      el('div', { class: 's', text: `Przy celu ${goal} tygodniowo to ${goal * 4} postów.` })),
+    el('div', { class: 'stat' }, el('div', { class: 'k', text: 'Najbliższy wolny termin' }), el('div', { class: 'v', text: fmtDay(nextSlot()) }),
+      el('div', { class: 's', text: overdue ? `${overdue} ${plural(overdue, 'post czeka', 'posty czekają', 'postów czeka')} po terminie.` : 'Dni publikacji zmienisz w ustawieniach marki.' })));
+  const list = $('#planList'); list.replaceChildren();
+  if (!posts.length) {
+    list.append(el('div', { class: 'empty-plan', text: 'Plan jest pusty. Przygotuj post i kliknij „Zapisz w planie”. Trafi na najbliższy wolny dzień publikacji.' }));
+    return;
+  }
+  if (todo.length) list.append(el('h3', { class: 'plan-h', text: 'Do publikacji' }), el('div', { class: 'plist' }, todo.map(planRow)));
+  if (done.length) list.append(el('h3', { class: 'plan-h', text: 'Opublikowane' }), el('div', { class: 'plist' }, done.slice(0, 40).map(planRow)));
+}
+
+/* ---------- Widoki i start ---------- */
+function switchView(name) {
+  $$('.tabs [role="tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === name)));
+  for (const v of ['new', 'plan', 'settings']) $('#view-' + v).hidden = v !== name;
+  try { localStorage.setItem('kio.view', name); } catch { /* widok to tylko wygoda */ }
+}
+function closeModal() { $('#saveModal').hidden = true; }
+function bindEvents() {
+  $$('.tabs [role="tab"]').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
+  $('#file').addEventListener('change', e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) addFiles(f); });
+  const drop = $('#drop');
+  ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'dragend'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer?.files?.length) addFiles(e.dataTransfer.files); });
+  document.addEventListener('paste', e => {
+    const files = [...(e.clipboardData?.files || [])].filter(f => /^image\//.test(f.type));
+    if (files.length) { e.preventDefault(); addFiles(files); }
+  });
+  $('#clearBtn').addEventListener('click', clearAll);
+  $('#ctxForm').addEventListener('submit', e => { e.preventDefault(); generate(); });
+  $('#saveBtn').addEventListener('click', saveToPlan);
+  $('#undoBtn').addEventListener('click', () => {
+    if (!S.history.length) return;
+    S.result = S.history.pop();
+    S.igVariant = Math.min(S.igVariant, S.result.instagram.variants.length - 1);
+    renderResults(); setStatus('Przywrócono poprzednią wersję tekstów.', 'ok');
+  });
+  $('#refineChips').replaceChildren(...REFINE_CHIPS.map(([label, ins]) => el('button', { type: 'button', class: 'chip', onclick: () => refine(ins) }, label)));
+  $('#refineForm').addEventListener('submit', e => { e.preventDefault(); refine($('#refineInput').value); });
+  $$('#bgSeg button').forEach(b => b.addEventListener('click', () => {
+    S.frameBg = b.dataset.bg;
+    $$('#bgSeg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    renderAllPreviews();
+  }));
+  $('#zipBtn').addEventListener('click', downloadZip);
+  $('#setForm').addEventListener('submit', saveSettings);
+  $('#saveClose').addEventListener('click', closeModal);
+  $('#saveModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#saveModal').hidden) closeModal(); });
+}
+async function init() {
+  buildContextForm();
+  fillSettingsForm();
+  S.result = clone(EXAMPLE); S.isExample = true;
+  bindEvents();
+  renderStrip(); renderResults(); renderFormats(); renderPlan();
+  let view = 'new';
+  try { view = localStorage.getItem('kio.view') || 'new'; } catch { view = 'new'; }
+  switchView(['new', 'plan', 'settings'].includes(view) ? view : 'new');
+  samplePromise.then(s => { if (!s && !S.busy) setStatus('Podgląd poza Claude: kadrowanie działa, a teksty pojawią się po otwarciu narzędzia w Claude.'); });
+  await Store.init();
+  $('#storeNote').textContent = Store.mode === 'db' ? 'Zapis w narzędziu, na każdym urządzeniu' : 'Zapis tylko w tej przeglądarce';
+  const saved = await Store.loadSettings();
+  if (saved && typeof saved === 'object') { S.settings = { ...DEFAULTS, ...saved }; fillSettingsForm(); }
+  Store.watchPosts(list => { S.posts = Array.isArray(list) ? list : []; renderPlan(); });
+}
+init();
+</script>
