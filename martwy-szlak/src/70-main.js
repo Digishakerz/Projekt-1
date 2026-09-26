@@ -187,9 +187,11 @@ async function boot(data) {
   requestAnimationFrame(frame);
 }
 // Po ponownej publikacji artefaktu zachowujemy oddział przechodzący na poziom 2.
-if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ carry }));
-if (window.claude && window.claude.hot && window.claude.hot.ready) window.claude.hot.ready(boot);
-else boot((window.claude && window.claude.hot && window.claude.hot.data) || {});
+const hot = window.claude && window.claude.hot;
+try { if (hot && hot.snapshot) hot.snapshot(() => ({ carry })); } catch (e) { /* bez zachowania stanu */ }
+let booted = false;
+const bootOnce = data => { if (!booted) { booted = true; boot(data || {}); } };
+try { if (hot && hot.ready) hot.ready(bootOnce); else bootOnce(hot && hot.data); } catch (e) { bootOnce({}); }
 // Uchwyt do testów automatycznych.
 window.__game = { get S() { return S; }, get mode() { return mode; }, start: startLevel, toMenu, pause, resume,
   fps: () => fpsHist.length / Math.max(0.001, fpsHist.reduce((a, b) => a + b, 0)), speed(k) { testSpeed = Math.max(1, Math.min(8, k | 0)); } };
