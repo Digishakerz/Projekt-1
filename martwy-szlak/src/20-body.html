@@ -1,0 +1,56 @@
+<div id="stage">
+  <canvas id="c" aria-label="Plansza gry: trzy pasy drogi, oddział na dole ekranu"></canvas>
+
+  <div id="hud" hidden>
+    <div class="row">
+      <div class="chip lvl" id="lvlName">Autostrada Śmierci</div>
+      <div class="row">
+        <div class="chip coins" aria-label="Monety"><i class="coin"></i><span id="coins">0</span></div>
+        <button class="icon" id="pauseBtn" type="button" aria-label="Pauza">II</button>
+      </div>
+    </div>
+    <div id="prog"><i></i></div>
+    <div class="row">
+      <div class="chip weapon"><img id="wImg" alt=""><span id="wName">Pistolet</span></div>
+    </div>
+    <div id="bossbar" hidden><div id="bossName"></div><div class="bar"><i id="bossHp"></i></div></div>
+  </div>
+
+  <div id="banner"><b></b><span></span></div>
+
+  <div class="overlay" id="menu" hidden>
+    <h1 class="title">Martwy Szlak</h1>
+    <p class="lede">Oddział biegnie i strzela sam. Ty wybierasz pas, a razem z nim to, w co idzie ogień.</p>
+    <div class="lanes">
+      <div><b>Lewo</b>Czerwone szyby nabijaj strzałami. Niebieską przebiegnij po żołnierzy.</div>
+      <div><b>Środek</b>Horda. Każdy zombie, który dojdzie do oddziału, zabiera żołnierza.</div>
+      <div><b>Prawo</b>Broń na podeście. Nabij licznik, a potem złap broń, która spadnie.</div>
+    </div>
+    <button class="sign a1" type="button" data-start="0"><span class="badge">A1</span><span class="txt"><strong>Autostrada Śmierci</strong><small>Pustynia, około 2 minut, boss Buldożer</small></span></button>
+    <button class="sign s2" type="button" data-start="1"><span class="badge">S2</span><span class="txt"><strong>Strefa Skażenia</strong><small>Noc w zakładach chemicznych, boss Kocioł</small></span></button>
+    <div class="row2">
+      <span class="sub">Trening z bossem:</span>
+      <button class="btn small" type="button" data-boss="0">Buldożer</button>
+      <button class="btn small" type="button" data-boss="1">Kocioł</button>
+      <button class="btn small" type="button" id="muteBtn">Dźwięk: wł.</button>
+    </div>
+    <p class="hint">Sterowanie: przeciągaj palcem w lewo i w prawo albo używaj strzałek ← →.</p>
+  </div>
+
+  <div class="overlay" id="pause" hidden>
+    <h2 class="title">Pauza</h2>
+    <p class="stats" id="pauseStats"></p>
+    <button class="btn" type="button" id="resumeBtn">Wróć do gry</button>
+    <button class="btn ghost" type="button" id="pauseMenuBtn">Menu</button>
+  </div>
+
+  <div class="overlay" id="end" hidden>
+    <h2 class="title" id="endTitle">Oddział padł</h2>
+    <p class="stats" id="endStats"></p>
+    <button class="btn" type="button" id="nextBtn" hidden>Dalej: Strefa Skażenia</button>
+    <button class="btn" type="button" id="retryBtn">Spróbuj ponownie</button>
+    <button class="btn ghost" type="button" id="endMenuBtn">Menu</button>
+  </div>
+
+  <div id="loading">Ładowanie grafik…</div>
+</div>

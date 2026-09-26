@@ -1,0 +1,23 @@
+{
+  "images": {
+    "soldier": "old/soldier.webp",
+    "z_n": "old/z_n.webp", "z_f": "old/z_f.webp", "z_w": "old/z_w.webp", "z_c": "old/z_c.webp",
+    "z_run": "old/z_run.webp", "z_fat": "old/z_fat.webp",
+    "b0": "old/b0.webp", "b1": "old/b1.webp",
+    "w0": "old/w0.webp", "w1": "old/w1.webp", "w3": "old/w3.webp", "w4": "old/w4.webp", "w5": "old/w5.webp",
+    "pedestal": "old/pedestal.webp",
+    "p_car": "old/p_car.webp", "p_bus": "old/p_bus.webp", "p_bags": "old/p_bags.webp", "p_cactus": "old/p_cactus.webp", "p_sign": "old/p_sign.webp",
+    "key": "old/key.jpg"
+  },
+  "sprites": {
+    "soldier": {"h": 32, "frames": ["soldier"]},
+    "z1": {"h": 34, "frames": ["z_n"]}, "z2": {"h": 34, "frames": ["z_f"]}, "z3": {"h": 34, "frames": ["z_w"]},
+    "zr": {"h": 33, "frames": ["z_run"]}, "zb": {"h": 60, "frames": ["z_fat"]}, "zx": {"h": 35, "frames": ["z_c"]},
+    "boss0": {"h": 170, "frames": ["b0"]}, "boss1": {"h": 176, "frames": ["b1"]},
+    "w0": {"h": 30, "frames": ["w0"], "ay": 0.5}, "w1": {"h": 30, "frames": ["w1"], "ay": 0.5}, "w2": {"h": 30, "frames": ["w3"], "ay": 0.5},
+    "w3": {"h": 30, "frames": ["w4"], "ay": 0.5}, "w4": {"h": 30, "frames": ["w5"], "ay": 0.5},
+    "pedestal": {"h": 74, "frames": ["pedestal"], "ay": 0.8},
+    "p_sedan": {"h": 70, "frames": ["p_car"]}, "p_bus": {"h": 100, "frames": ["p_bus"]}, "p_barrel": {"h": 56, "frames": ["p_bags"]},
+    "p_cactus": {"h": 92, "frames": ["p_cactus"]}, "p_sign": {"h": 110, "frames": ["p_sign"]}
+  }
+}
